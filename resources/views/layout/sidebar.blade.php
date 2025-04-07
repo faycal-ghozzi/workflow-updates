@@ -1,5 +1,86 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="{{ url('/') }}" class="brand-link">
+        <img src="{{ asset('logo.png') }}" alt="Logo" class="brand-image img-circle elevation-3" style="position:relative; left:20px">
+    </a>
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            {{-- <div class="image">
+                <img src="{{ asset('user.png') }}" class="img-circle elevation-2" alt="User Image">
+            </div> --}}
+            <div class="info">
+                <a href="#" class="d-block">Username</a>
+            </div>
+        </div>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+
+                <!-- COMPENSATION -->
+                <li class="nav-item {{ request()->is('compensation') ? 'active' : '' }}">
+                    <a href="{{ url('/compensation') }}" class="nav-link">
+                        <i class="nav-icon fas fa-balance-scale"></i>
+                        <p>{{ __('Compensation') }}</p>
+                    </a>
+                </li>
+
+                <!-- You can uncomment below items if needed -->
+
+                {{-- <!-- CHEQUIER -->
+                <li class="nav-item {{ request()->is('chequier') ? 'active' : '' }}">
+                    <a href="{{ url('/chequier') }}" class="nav-link">
+                        <i class="nav-icon fas fa-money-bill"></i>
+                        <p>{{ __('Chéquier') }}</p>
+                    </a>
+                </li> --}}
+
+                {{-- <!-- PLACEMENT -->
+                <li class="nav-item {{ request()->is('placement') ? 'active' : '' }}">
+                    <a href="{{ url('/placement') }}" class="nav-link">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>{{ __('Placements') }}</p>
+                    </a>
+                </li>
+
+                <!-- CLÔTURE -->
+                <li class="nav-item {{ request()->is('cloture') ? 'active' : '' }}">
+                    <a href="{{ url('/cloture') }}" class="nav-link">
+                        <i class="nav-icon fas fa-lock"></i>
+                        <p>{{ __('Clôture des comptes') }}</p>
+                    </a>
+                </li>
+
+                <!-- ADMIN USERS -->
+                <li class="nav-item {{ request()->is('user') || request()->is('listAuthetificatedUser') ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            {{ __('Users') }}
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('/user') }}" class="nav-link {{ request()->is('user') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{ __('Users List') }}</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('/listAuthetificatedUser') }}" class="nav-link {{ request()->is('listAuthetificatedUser') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>{{ __('Authenticated Users') }}</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li> --}}
+
+            </ul>
+        </nav>
+    </div>
+</aside>
+
+
+{{-- <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="{{ url('/') }}" class="brand-link">
         <img src="{{ asset('../dist/img/logo.png') }}" alt="AdminLTE Logo" class="brand-image" style="position:relative; left:20px">
     </a>
     <div class="sidebar">
@@ -253,4 +334,4 @@
             </ul>
         </nav>
     </div>
-</aside>
+</aside> --}}

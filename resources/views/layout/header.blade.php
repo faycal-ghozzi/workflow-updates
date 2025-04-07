@@ -1,4 +1,28 @@
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light border-bottom-0">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+
+      <!-- Authentication -->
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <a class="nav-link" href="route('logout')"
+                onclick="event.preventDefault();
+                            this.closest('form').submit();">
+            {{ __('Déconnexion') }}
+        </a>
+      </form>
+
+
+
+    </ul>
+  </nav>
+
+{{-- <meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light border-bottom-0">
     <!-- Left navbar links -->
@@ -341,4 +365,4 @@
 
 
 </script>
-  <!-- /.navbar -->
+  <!-- /.navbar --> --}}

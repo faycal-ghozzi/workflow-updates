@@ -62,13 +62,32 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'ldap',
-            'model' => App\Models\User::class,
+            'model' => LdapRecord\Models\ActiveDirectory\User::class,
+            'rules' => [],
+            'scopes' => [],
+            'database' => [
+                'model' => App\Models\User::class,
+                'sync_passwords' => false,
+                'sync_attributes' => [
+                    'username' => 'samaccountname',
+                    'name' => 'cn',
+                ],
+            ],
+            'identifiers' => [
+                'ldap' => [
+                    'locate_users_by' => 'samaccountname',
+                    'bind_users_by' => 'distinguishedname',
+                ],
+                'database' => [
+                    'guid_column' => 'objectguid',
+                    'username_column' => 'username',
+                ],
+            ],
+            'passwords' => [
+                'sync' => env('LDAP_PASSWORD_SYNC', true),
+                'column' => 'password',
+            ],
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

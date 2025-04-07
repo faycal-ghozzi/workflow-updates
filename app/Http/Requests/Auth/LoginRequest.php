@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class LoginRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'username' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -37,19 +38,50 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate(): void
+    public function authenticate()
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $credentials = [
+            'samaccountname' => $this->username,
+            'password' => $this->password,
+        ];
+
+        // Log the credentials for debugging
+        Log::info('Attempting to authenticate user:', [
+            'username' => $this->username,
+            'credentials' => $credentials, // log all credentials (including password)
+        ]);
+
+        $authenticated = Auth::attempt($credentials, $this->filled('remember'));
+
+        // Log the response of the authentication attempt
+        Log::info('Authentication attempt response:', [
+            'authenticated' => $authenticated,
+            'username' => $this->username,
+            'credentials' => $credentials, // optional: log credentials (be careful with passwords)
+        ]);
+
+        if (! $authenticated) {
+            // Hit the rate limiter on failure
             RateLimiter::hit($this->throttleKey());
 
+            // Log failed authentication attempt
+            Log::warning('Authentication failed for user:', [
+                'username' => $this->username,
+                'credentials' => $credentials, // log credentials for debugging purposes
+            ]);
+
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'username' => __('auth.failed'),
             ]);
         }
 
+
         RateLimiter::clear($this->throttleKey());
+        Log::info('User authenticated successfully:', [
+            'username' => $this->username,
+        ]);
     }
 
     /**

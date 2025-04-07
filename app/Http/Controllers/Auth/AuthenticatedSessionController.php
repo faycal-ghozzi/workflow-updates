@@ -7,9 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
-
+use Illuminate\Support\Facades\Log;
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -27,14 +26,11 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        Log::debug('Authenticated User:', ['user' => Auth::user()]);
-
         $request->session()->regenerate();
 
-        Log::debug('Session regenerated:', ['session_id' => session()->getId()]);
+        // return redirect()->intended(route('compensation.list', absolute: false));
+        return redirect()->route('compensation.list');
 
-        return redirect()->route('listCompensation');
-        // return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-{{-- @include('partials.head'); --}}
+@include('partials.head');
 <body class="layout-navbar-fixed sidebar-mini">
     <div class="wrapper">
-        {{-- @include('layout.header') --}}
-        {{-- @include('layout.sidebar') --}}
+        @include('layout.header')
+        @include('layout.sidebar')
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
@@ -30,6 +30,6 @@
         {{-- @include('layout.footer') --}}
 
     </div>
-    {{-- @include('partials.scripts') --}}
+    @include('partials.scripts')
 </body>
 </html>
