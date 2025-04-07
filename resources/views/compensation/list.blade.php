@@ -23,42 +23,40 @@
 
     {{-- Tableau des Compensations --}}
     <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm">
+        <table id="liste-compensation" class="table table-bordered table-striped table-sm">
             <thead class="table-dark">
                 <tr>
                     <th>#</th>
-                    <th>Référence</th>
                     <th>Client</th>
-                    <th>Montant</th>
-                    <th>Agence</th>
+                    <th>Nom / Raison sociale</th>
                     <th>Date</th>
+                    <th>Agence</th>
                     <th>Statut</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($compensations as $comp)
+                   @php
+                        $status = \App\Helpers\StatusHelper::getStatusLabel($comp->status);
+                    @endphp
+
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $comp->ref_comp }}</td>
+                        <td>{{ $comp->code_client }}</td>
                         <td>{{ $comp->nom_client }}</td>
-                        <td>{{ number_format($comp->montant, 2, ',', ' ') }}</td>
-                        <td>{{ $comp->Agence_function->nom_agence ?? '-' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($comp->date_compensation)->format('d/m/Y') }}</td>
+                        @if($comp->date_compensation !== NULL)
+                            <td>{{ $comp->date_compensation->format('d-m-Y') }}</td>
+                        @else                        
+                            <td>**-**-****</td>
+                        @endif
+                        <td>{{ $comp->Agence_function->designation ?? '-' }}</td>
                         <td>
-                            @switch($comp->status_final)
-                                @case(1)
-                                    <span class="badge bg-warning text-dark">En attente</span>
-                                    @break
-                                @case(2)
-                                    <span class="badge bg-success">Accepté</span>
-                                    @break
-                                @case(3)
-                                    <span class="badge bg-danger">Refusé</span>
-                                    @break
-                                @default
-                                    <span class="badge bg-secondary">-</span>
-                            @endswitch
+                            @if($status)
+                                <span class="badge badge-{{ $status['badge'] }}">
+                                    {{ $status['label'] }}
+                                </span>
+                            @endif
                         </td>
                         <td>
                             {{-- <a href="{{ route('compensation.show', $comp->id) }}" class="btn btn-sm btn-outline-primary">Voir</a> --}}
@@ -74,9 +72,12 @@
     </div>
 
     {{-- Pagination --}}
-    <div class="d-flex justify-content-center mt-3">
+    {{-- <div class="d-flex justify-content-center mt-3">
         {{ $compensations->links() }}
-    </div>
+    </div> --}}
 </div>
 @endsection
 
+@push('scripts')
+    @vite('resources/js/compensation.js')
+@endpush
