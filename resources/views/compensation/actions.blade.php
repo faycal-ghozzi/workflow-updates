@@ -1,0 +1,1 @@
+<a href="{{ route('compensation.show', $compensation->id) }}" class="btn btn-sm btn-outline-primary">Voir</a>
