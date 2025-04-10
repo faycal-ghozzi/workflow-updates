@@ -16,6 +16,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/compensation', [CompensationController::class, 'list'])->name('compensation.list');
     Route::get('/compensation/historique', [CompensationController::class, 'historique'])->name('compensation.historique');
     Route::get('/compensation/etat_journalier', [CompensationController::class, 'etatJournalier'])->name('compensation.etat_journalier');
+    Route::get('/compensation/extrait', [CompensationController::class, 'extrait'])->name('compensation.extrait');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

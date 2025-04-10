@@ -97,23 +97,24 @@ class CompensationController extends Controller
     public function etatJournalier()
     {
         $today = date('Y-m-d');
-        
-        // $compensations = Compensation::whereDate('created_at', $today)
-        // ->where('status', 15)
-        // ->select('code_client', 'account_number', 'nom_client', 'name_secteur', 'classement_client', 'solde_compensation', 'date_compensation', 'updated_at', 'val_compensation', 'status', 'code_agence')
-        // ->orderBy('created_at', 'DESC')
-        // ->paginate(25);
 
-        $compensations = Compensation::with('avis_comp') // Eager load the relation
+        $compensations = Compensation::with('avis_comp')
         ->whereDate('created_at', $today)
         ->where('status', 15)
         ->select('id', 'code_client', 'account_number', 'nom_client', 'name_secteur', 'classement_client', 'solde_compensation', 'date_compensation', 'updated_at', 'val_compensation', 'status', 'code_agence')
         ->orderBy('created_at', 'DESC')
-        ->paginate(25);
+        // ->paginate(25);
+        ->get();
 
-        // $compensations = Compensation::with('Agence_function')->whereDate('created_at',date('Y-m-d'))->where('status',15)->orderBy('created_at', 'DESC')->get();        
         return view('compensation.etat_journalier', compact('compensations'));
     }
 
+    public function extrait(){
+        $compensations = Compensation::select('code_client', 'nom_client', 'date_compensation', 'code_agence', 'status')
+        ->orderBy('created_at', 'DESC')
+        ->paginate(20);
+        // ->get();
 
+        return view('compensation.extrait', compact('compensations'));
+    }
 }

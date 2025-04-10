@@ -9,8 +9,8 @@
     <div class="collapse ps-3" id="compensationMenu">
       <a href="{{ route('compensation.list') }}" class="list-group-item list-group-item-action">Liste</a>
       <a href="{{ route('compensation.historique') }}" class="list-group-item list-group-item-action">Historique</a>
-      <a href="#" class="list-group-item list-group-item-action">Allowances</a>
       <a href="{{ route('compensation.etat_journalier') }}" class="list-group-item list-group-item-action">État Journalier</a>
+      <a href="{{ route('compensation.extrait') }}" class="list-group-item list-group-item-action">Extrait</a>
     </div>
 
     <a href="#" class="list-group-item list-group-item-action">Reports</a>
