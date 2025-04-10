@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AgencyHelper;
 use App\Models\Compensation\Compensation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Yajra\DataTables\Facades\DataTables;
 
 class CompensationController extends Controller
 {
@@ -28,6 +29,12 @@ class CompensationController extends Controller
             ->select('code_client', 'nom_client', 'date_compensation', 'status', 'code_agence')
             ->orderByDesc('created_at')
             ->paginate(25);
+
+        $agencyHelper = new AgencyHelper();
+
+        foreach ($compensations as $compensation) {
+            $compensation->agency_name = $agencyHelper->getAgencyName($compensation->code_agence);
+        }
 
         $counts = Compensation::whereDate('date_compensation', $today)
             ->whereNull('test')
@@ -96,25 +103,63 @@ class CompensationController extends Controller
 
     public function etatJournalier()
     {
-        $today = date('Y-m-d');
-
-        $compensations = Compensation::with('avis_comp')
-        ->whereDate('created_at', $today)
-        ->where('status', 15)
-        ->select('id', 'code_client', 'account_number', 'nom_client', 'name_secteur', 'classement_client', 'solde_compensation', 'date_compensation', 'updated_at', 'val_compensation', 'status', 'code_agence')
-        ->orderBy('created_at', 'DESC')
-        // ->paginate(25);
-        ->get();
-
-        return view('compensation.etat_journalier', compact('compensations'));
+        return view('compensation.etat_journalier');
     }
 
-    public function extrait(){
-        $compensations = Compensation::select('code_client', 'nom_client', 'date_compensation', 'code_agence', 'status')
-        ->orderBy('created_at', 'DESC')
-        ->paginate(20);
-        // ->get();
 
-        return view('compensation.extrait', compact('compensations'));
+    public function etatJournalierData(Request $request, AgencyHelper $agencyHelper)
+    {
+        $today = date('Y-m-d');
+
+        $query = Compensation::with('avis_comp')
+            ->whereDate('created_at', $today)
+            ->where('status', 15)
+            ->select('id', 'code_client', 'account_number', 'nom_client', 'name_secteur', 'classement_client', 'solde_compensation', 'date_compensation', 'updated_at', 'val_compensation', 'status', 'code_agence')
+            ->orderBy('created_at', 'DESC');
+
+        return DataTables::of($query)
+            ->editColumn('date_compensation', function($comp) {
+                return $comp->date_compensation->format('Y-m-d');
+            })
+            ->editColumn('status', function($comp) {
+                $status = \App\Helpers\StatusHelper::getStatusLabel($comp->status);
+                if ($status) {
+                    return '<span class="badge bg-' . $status['badge'] . '">' . $status['label'] . '</span>';
+                }
+                return '';
+            })
+            ->editColumn('code_agence', function($comp) use ($agencyHelper) {
+                return $agencyHelper->getAgencyName($comp->code_agence);
+            })
+            ->rawColumns(['status'])
+            ->make(true);
+    }
+
+
+    public function extrait(){
+        return view('compensation.extrait');
+    }
+
+    public function extraitData(Request $request, AgencyHelper $agencyHelper){
+        $query = Compensation::select(
+            'code_client', 'nom_client', 'date_compensation', 'code_agence', 'status')
+            ->orderBy('created_at', 'DESC');
+
+        return DataTables::of($query)
+            ->editColumn('date_compensation', function($comp) {
+                return $comp->date_compensation->format('Y-m-d');
+            })
+            ->editColumn('status', function($comp) {
+                $status = \App\Helpers\StatusHelper::getStatusLabel($comp->status);
+                if ($status) {
+                    return '<span class="badge bg-' . $status['badge'] . '">' . $status['label'] . '</span>';
+                }
+                return '';
+            })
+            ->editColumn('code_agence', function($comp) use ($agencyHelper) {
+                return $agencyHelper->getAgencyName($comp->code_agence);
+            })
+            ->rawColumns(['status'])
+            ->toJson();
     }
 }

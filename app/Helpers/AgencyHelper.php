@@ -1,30 +1,17 @@
 <?php
 
-namespace App\View\Components;
+namespace App\Helpers;
 
-use Closure;
-use Illuminate\Contracts\View\View;
-use Illuminate\View\Component;
-
-class AgencyDesignation extends Component
+class AgencyHelper
 {
-
-    public $agenceId;
-
     /**
-     * Create a new component instance.
+     * Get agency name based on the agency ID.
+     *
+     * @param int $agenceId
+     * @return string
      */
-    public function __construct($agenceId)
+    public function getAgencyName($agenceId)
     {
-        $this->agenceId = $agenceId;
-    }
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View|Closure|string
-    {
-
         $agencies = [
             1 => 'BTL agence Tunis',
             3 => 'BTL agence Sfax',
@@ -49,8 +36,6 @@ class AgencyDesignation extends Component
             24 => 'BTL agence Megrine'
         ];
 
-        $agenceName = isset($agencies[$this->agenceId]) ? $agencies[$this->agenceId] : null;
-        
-        return view('components.agency-designation', compact('agenceName'));
+        return isset($agencies[$agenceId]) ? $agencies[$agenceId] : 'Unknown Agency';
     }
 }

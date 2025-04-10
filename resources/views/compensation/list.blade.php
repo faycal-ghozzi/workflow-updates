@@ -44,7 +44,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($compensations as $comp)
+                    @foreach($compensations as $comp)
                         @php
                             $status = \App\Helpers\StatusHelper::getStatusLabel($comp->status);
                         @endphp
@@ -57,7 +57,7 @@
                                 <td>**-**-****</td>
                             @endif
                             <td>
-                                <x-agency-designation :agenceId="$comp->code_agence" />
+                                {{ $comp->agency_name }}
                             </td>
                             <td>
                                 @if($status)
@@ -70,11 +70,7 @@
                                 <a href="{{-- route('compensation.show', $comp->id) --}}" class="btn btn-sm btn-outline-primary">Voir</a>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8" class="text-center text-muted">Aucune compensation trouvée pour cette date.</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         @endif
