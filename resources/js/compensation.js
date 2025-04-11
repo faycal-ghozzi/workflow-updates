@@ -11,7 +11,7 @@ $('#historique-compensation').DataTable({
     processing: true,
     serverSide: true,
     ajax: {
-        url: '/compensation/historique', // Use your named route
+        url: '/compensation/historique',
         type: 'GET',
     },
     columns: [
@@ -25,10 +25,16 @@ $('#historique-compensation').DataTable({
     language: datatableLanguage
 });
 
-$('#liste-extrait').DataTable({
+let table = $('#liste-extrait').DataTable({
     processing: true,
     serverSide: true,
-    ajax: '/compensation/extrait',
+    ajax: {
+        url: '/compensation/extrait',
+        data: function (d) {
+            d.start_date = $('#start_date').val();
+            d.end_date = $('#end_date').val();
+        }
+    },
     columns:[
         {data: 'code_client'},
         {data: 'nom_client'},
@@ -37,7 +43,18 @@ $('#liste-extrait').DataTable({
         {data: 'status', orderable: false, searchable: false},
     ],
     language: datatableLanguage
-})
+});
+
+$('#filterBtn').on('click', function () {
+    table.ajax.reload();
+});
+
+$('#resetBtn').on('click', function () {
+    $('#start_date').val('');
+    $('#end_date').val('');
+    table.ajax.reload();
+});
+
 
 $('#liste-etat-journalier').DataTable({
     processing: true,

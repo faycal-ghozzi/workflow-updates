@@ -15,16 +15,18 @@
 
     <div class="mb-4">
         <strong>Total :</strong> {{ $counts->total }} |
-        <span class="text-warning">🕓 Attente : {{ $counts->attent }}</span> |
-        <span class="text-success">✔ Accepté : {{ $counts->accept }}</span> |
+        <span class="text-warning">🕓 Attente : {{ $counts->attent }}</span>
+        <span class="text-success">✔ Accepté : {{ $counts->accept }}</span>
         <span class="text-danger">❌ Refusé : {{ $counts->refuse }}</span>
     </div>
-
-    <div class="mb-3 d-flex justify-content-end">
-        <a href="{{-- route('compensation.create') --}}" class="btn btn-success">
-            + Nouveau
-        </a>
-    </div>
+    
+    @if($hasPermission)
+        <div class="mb-3 d-flex justify-content-end">
+            <a href="{{-- route('compensation.create') --}}" class="btn btn-success">
+                + Nouveau
+            </a>
+        </div>
+    @endif
 
     <div class="table-responsive">
         @if($compensations->isEmpty())
@@ -66,9 +68,10 @@
                                     </span>
                                 @endif
                             </td>
-                            <td>
-                                <a href="{{-- route('compensation.show', $comp->id) --}}" class="btn btn-sm btn-outline-primary">Voir</a>
-                            </td>
+                            @php $dropdownId = 'compensationDropDown' . $comp->id; @endphp
+                            <td class="text-nowrap">
+                                <x-compensation-action-buttons :comp="$comp" />
+                            </td>                    
                         </tr>
                     @endforeach
                 </tbody>
