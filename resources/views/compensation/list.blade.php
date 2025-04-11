@@ -19,10 +19,10 @@
         <span class="text-success">✔ Accepté : {{ $counts->accept }}</span>
         <span class="text-danger">❌ Refusé : {{ $counts->refuse }}</span>
     </div>
-    
+
     @if($hasPermission)
         <div class="mb-3 d-flex justify-content-end">
-            <a href="{{-- route('compensation.create') --}}" class="btn btn-success">
+            <a href="{{ route('compensation.get_client') }}" class="btn btn-success">
                 + Nouveau
             </a>
         </div>

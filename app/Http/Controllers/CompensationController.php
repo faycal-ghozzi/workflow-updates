@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use SoapClient;
 use App\Helpers\AgencyHelper;
 use App\Models\Compensation\Compensation;
 use Illuminate\Http\Request;
@@ -237,5 +239,48 @@ class CompensationController extends Controller
     
         return view('compensation.extrait');
     }
-    
+
+    public function getClient(){
+        return view('compensation.get_client');
+    }
+
+    public function checkClient($accountNumber)
+    {
+        try {
+            $soap = new \SoapClient(env('SOAP_WSDL_URL'));
+
+            $params = [
+                'WebRequestCommon' => [
+                    'userName' => env('SOAP_USERNAME'),
+                    'password' => env('SOAP_PASSWORD'),
+                    'company'  => env('SOAP_COMPANY'),
+                ],
+                'WSWORKFLOWCHQType' => [
+                    'enquiryInputCollection' => [
+                        'columnName'    => 'NUM.COMPTE',
+                        'criteriaValue' => $accountNumber,
+                        'operand'       => 'EQ',
+                    ],
+                ],
+            ];
+
+            $response = $soap->WSWORKFLOWCHQ($params);
+
+            $client = data_get(
+                (array) $response,
+                'WSWORKFLOWCHQType.gWSWORKFLOWCHQDetailType.mWSWORKFLOWCHQDetailType.CUSTOMER'
+            );
+
+            if ($client) {
+                return response()->json([
+                    'compte' => 1,
+                    'client' => $client,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('SOAP Error: ' . $e->getMessage());
+        }
+
+        return response()->json(false);
+    }    
 }
