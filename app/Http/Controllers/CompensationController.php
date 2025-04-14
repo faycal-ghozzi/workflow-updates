@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Exception;
 use SoapClient;
+use App\Services\SoapService;
 use App\Helpers\AgencyHelper;
+use App\Models\Agence;
 use App\Models\Compensation\Compensation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,14 @@ use Illuminate\Support\Facades\Log;
 
 class CompensationController extends Controller
 {
+
+    private $soapService;
+
+    public function __construct(SoapService $soapService)
+    {
+        $this->soapService = $soapService;
+    }
+
     public function list()
     {
         $today = date('Y-m-d');
@@ -246,41 +256,358 @@ class CompensationController extends Controller
 
     public function checkClient($accountNumber)
     {
-        try {
-            $soap = new \SoapClient(env('SOAP_WSDL_URL'));
-
-            $params = [
-                'WebRequestCommon' => [
-                    'userName' => env('SOAP_USERNAME'),
-                    'password' => env('SOAP_PASSWORD'),
-                    'company'  => env('SOAP_COMPANY'),
+        $params = [
+            'WebRequestCommon' => [
+                'userName' => env('SOAP_USERNAME'),
+                'password' => env('SOAP_PASSWORD'),
+                'company'  => env('SOAP_COMPANY'),
+            ],
+            'WSWORKFLOWCHQType' => [
+                'enquiryInputCollection' => [
+                    'columnName'    => 'NUM.COMPTE',
+                    'criteriaValue' => $accountNumber,
+                    'operand'       => 'EQ',
                 ],
-                'WSWORKFLOWCHQType' => [
-                    'enquiryInputCollection' => [
-                        'columnName'    => 'NUM.COMPTE',
-                        'criteriaValue' => $accountNumber,
-                        'operand'       => 'EQ',
-                    ],
-                ],
-            ];
+            ],
+        ];
 
-            $response = $soap->WSWORKFLOWCHQ($params);
+        $response = $this->soapService->request('WSWORKFLOWCHQ', $params);
 
-            $client = data_get(
-                (array) $response,
-                'WSWORKFLOWCHQType.gWSWORKFLOWCHQDetailType.mWSWORKFLOWCHQDetailType.CUSTOMER'
-            );
+        $client = data_get($response, 'CUSTOMER');
 
-            if ($client) {
-                return response()->json([
-                    'compte' => 1,
-                    'client' => $client,
-                ]);
-            }
-        } catch (\Exception $e) {
-            Log::error('SOAP Error: ' . $e->getMessage());
+        if ($client) {
+            return response()->json([
+                'CUSTOMER' => $client,
+            ]);
         }
 
         return response()->json(false);
-    }    
+    }
+
+    public function addRequest(Request $request)
+    {
+        $agences = Agence::distinct()->get();
+        $id_client = $request['client_code'];
+        $account = $request['account_number'];
+        $derniere_compensation = Compensation::where('code_client', $id_client)->orderBy('created_at', 'DESC')->first();
+
+        $soap = new \SoapClient(env('SOAP_WSDL_URL'));
+        $functions = $soap->__getFunctions();
+
+        //INFORMATIONS GLOBALES
+        try{
+            $params = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+
+                "WSINFORMATIONSGLOBType" => array(
+                    "enquiryInputCollection" => array(
+                        ["columnName" => "CODE.CLIENT",
+                        "criteriaValue" => $id_client,
+                        "operand" => "EQ",],
+
+                        ["columnName" => "NUM.COMPTE",
+                        "criteriaValue" => $account,
+                        "operand" => "EQ",]
+                    )
+                )
+            );
+            $InfGlob = $soap->WSINFORMATIONGLOB($params);
+            $outterArrayInfGlob = ((array)$InfGlob);
+            $innerArrayInfGlob = ((array)$outterArrayInfGlob['WSINFORMATIONSGLOBType']);
+            $dataArrayInfGlob = ((array)$innerArrayInfGlob['gWSINFORMATIONSGLOBDetailType']);
+            $listArrayInfGlob = ((array)$dataArrayInfGlob['mWSINFORMATIONSGLOBDetailType']);
+
+            $listAutreCompte = $listArrayInfGlob;
+
+
+        } catch (Exception $e) {
+            $listArrayInfGlob = [];
+            $listAutreCompte = [];
+        }
+
+        //ENGAGEMENT GERANT
+        try{
+            $paramsG = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSENGAGEMENTGERANTType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "CODE.CLIENT",
+                        "criteriaValue" => $id_client,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $InfEngGer = $soap->WSENGAGEMENTGERANT($paramsG);
+
+            $outterArrayEngGer = ((array)$InfEngGer);
+            $innerArrayEngGer = ((array)$outterArrayEngGer['WSENGAGEMENTGERANTType']);
+            $dataArrayEngGer = ((array)$innerArrayEngGer['gWSENGAGEMENTGERANTDetailType']);
+            $listArrayEngGer = ((array)$dataArrayEngGer['mWSENGAGEMENTGERANTDetailType']);
+
+        } catch (Exception $e) {
+            $listArrayEngGer = [];
+        }
+
+        //ENGAGEMENT CLIENT
+        try{
+            $paramsC = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSENGAGEMENTCLIENTType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "CODE.CLIENT",
+                        "criteriaValue" => $id_client,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $InfEngCred = $soap->WSENGAGEMENTCLIENT($paramsC);
+
+            $outterArrayEngCred = ((array)$InfEngCred);
+            $innerArrayEngCred = ((array)$outterArrayEngCred['WSENGAGEMENTCLIENTType']);
+            $dataArrayEngCred = ((array)$innerArrayEngCred['gWSENGAGEMENTCLIENTDetailType']);
+            $listArrayEngCred = ((array)$dataArrayEngCred['mWSENGAGEMENTCLIENTDetailType']);
+
+        } catch (Exception $e) {
+            $listArrayEngCred = [];
+        }
+
+        //PLACEMENT
+        try{
+            $paramsP = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSPLACEMENTType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "CUSTOMER.ID",
+                        "criteriaValue" => $id_client,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $InfPlacement = $soap->WSPLACEMENT($paramsP);
+
+            $outterArrayPlacement = ((array)$InfPlacement);
+            $innerArrayPlacement = ((array)$outterArrayPlacement['WSPLACEMENTType']);
+            $dataArrayPlacement = ((array)$innerArrayPlacement['gWSPLACEMENTDetailType']);
+            $listArrayPlacement = ((array)$dataArrayPlacement['mWSPLACEMENTDetailType']);
+
+        } catch (Exception $e) {
+            $listArrayPlacement = [];
+        }
+
+        //LIMIT
+        try{
+            $paramsL = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "LIMITEWSType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "LINE.ID",
+                        "criteriaValue" => $id_client.'.0010000.01',
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $InfLimit = $soap->WSLIMIT($paramsL);
+
+            $outterArrayLimit  = ((array)$InfLimit);
+            $innerArrayLimit  = ((array)$outterArrayLimit['LIMITEWSType']);
+            $dataArrayLimit  = ((array)$innerArrayLimit['gLIMITEWSDetailType']);
+            $listArrayLimit  = ((array)$dataArrayLimit['mLIMITEWSDetailType']);
+
+        } catch (Exception $e) {
+            $listArrayLimit  = [];
+        }
+
+        if ($listArrayLimit != null){
+            $first_line = $listArrayLimit[0];
+            $second_line = $listArrayLimit[1];
+        }else{
+            $first_line = [];
+            $second_line = [];
+        }
+
+        //IMPAYE
+        try{
+            $params1 = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSWORKFLOWCHQIMPAYEType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "CLIENT",
+                        "criteriaValue" => $id_client,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $imp = $soap->WSWORKFLOWCHQIMPAYE($params1);
+
+            $outterArrayImp = ((array)$imp);
+            $innerArrayImp = ((array)$outterArrayImp['WSWORKFLOWCHQIMPAYEType']);
+            $dataArrayImp = ((array)$innerArrayImp['gWSWORKFLOWCHQIMPAYEDetailType']);
+            $listArrayImp = ((array)$dataArrayImp['mWSWORKFLOWCHQIMPAYEDetailType']);
+        } catch (Exception $e) {
+            $listArrayImp = [];
+        }
+
+        //TOMBEE ECHEANCE
+        try{
+            $paramsTE = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSTOMBEECHEANCEType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "CODE.CLIENT",
+                        "criteriaValue" => $id_client,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $TMBE = $soap->WSTOMBEECHEANCE($paramsTE);
+
+            $outterArrayTMBE = ((array)$TMBE);
+            $innerArrayTMBE= ((array)$outterArrayTMBE['WSTOMBEECHEANCEType']);
+            $dataArrayTMBE = ((array)$innerArrayTMBE['gWSTOMBEECHEANCEDetailType']);
+            $listArrayTMBE = ((array)$dataArrayTMBE['mWSTOMBEECHEANCEDetailType']);
+
+        } catch (Exception $e) {
+            $listArrayTMBE = [];
+        }
+
+        //ENCOURS CHEQUE
+        try{
+            $paramsENCR = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSENCOURSCHEQUEType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "CODE.CLIENT",
+                        "criteriaValue" => $id_client,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $ENCR = $soap->WSENCOURSCHEQUE($paramsENCR);
+
+            $outterArrayENCR = ((array)$ENCR);
+            $innerArrayENCR= ((array)$outterArrayENCR['WSENCOURSCHEQUEType']);
+            $dataArrayENCR = ((array)$innerArrayENCR['gWSENCOURSCHEQUEDetailType']);
+            $listArrayENCR = ((array)$dataArrayENCR['mWSENCOURSCHEQUEDetailType']);
+
+        } catch (Exception $e) {
+            $listArrayENCR = [];
+        }
+
+        //ACCOUNT LEASING
+        try{
+            $params2 = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSCOMPTELEASINGCHQType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "CODE.CLIENT",
+                        "criteriaValue" => $id_client,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $Leas = $soap->WSCOMPTELEASINGCHQ($params2);
+            $outterArrayLeas = ((array)$Leas);
+            $innerArrayLeas = ((array)$outterArrayLeas['WSCOMPTELEASINGCHQType']);
+            $dataArrayLeas = ((array)$innerArrayLeas['gWSCOMPTELEASINGCHQDetailType']);
+            $listArrayLeas = ((array)$dataArrayLeas['mWSCOMPTELEASINGCHQDetailType']);
+        }catch (Exception $e) {
+            $listArrayLeas = [];
+        }
+
+        //INCIDENT DE PAIEMENT
+        try{
+            $paramsIP = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSINCIDENTPAIEMENTType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "NUM.COMPTE",
+                        "criteriaValue" => $account,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $IP = $soap->WSINCIDENTPAIEMENT($paramsIP);
+
+            $outterArrayIP = ((array)$IP);
+            $innerArrayIP= ((array)$outterArrayIP['WSINCIDENTPAIEMENTType']);
+            $dataArrayIP = ((array)$innerArrayIP['gWSINCIDENTPAIEMENTDetailType']);
+            $listArrayIP = ((array)$dataArrayIP['mWSINCIDENTPAIEMENTDetailType']);
+
+
+        } catch (Exception $e) {
+            $listArrayIP = [];
+        }
+
+        //ENCOURS EFFET A ENCAISSEMENT
+        try{
+            $paramsEFFET = array(
+                "WebRequestCommon" => array(
+                    "userName" => env('SOAP_USERNAME'),
+                    "password" => env('SOAP_PASSWORD'),
+                    "company" => env('SOAP_COMPANY'),
+                ),
+                "WSEFFETENCOURSType" => array(
+                    "enquiryInputCollection" => array(
+                        "columnName" => "COMPTE.CEDANT",
+                        "criteriaValue" => $account,
+                        "operand" => "EQ",
+                    )
+                )
+            );
+            $EFFET = $soap->WSEFFETENCOURS($paramsEFFET);
+
+            $outterArrayEFFET = ((array)$EFFET);
+            $innerArrayEFFET= ((array)$outterArrayEFFET['WSEFFETENCOURSType']);
+            $dataArrayEFFET = ((array)$innerArrayEFFET['gWSEFFETENCOURSDetailType']);
+            $listArrayEFFET = ((array)$dataArrayEFFET['mWSEFFETENCOURSDetailType']);
+
+
+        } catch (Exception $e) {
+            $listArrayEFFET = [];
+        }
+
+        return view('compensation.add_request', compact('agences','derniere_compensation',
+                                                    'listArrayInfGlob','listAutreCompte','listArrayEngGer','listArrayPlacement','listArrayEngCred',
+                                                    'first_line','second_line','listArrayImp','listArrayTMBE','listArrayENCR','listArrayLeas','listArrayIP','listArrayEFFET'));
+    }
 }

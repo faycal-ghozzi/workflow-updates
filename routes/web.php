@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/compensation/get_client/check/{accountNumber}', [CompensationController::class, 'checkClient'])->name('compensation.check_client');
+    Route::post('/compensation/get_client/add_request', [CompensationController::class, 'addRequest'])->name('compensation.add_request');
+
 
     Route::get('/compensation/view/{id}', function ($id) {
         return "Testing view route OK! ID: {$id}";

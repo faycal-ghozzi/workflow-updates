@@ -1,15 +1,20 @@
 function openModalWithClientData(clientCode, isSuccess = true) {
-    const searchButton = $('#modalSearchButton');
+    const searchButton = $('#modalSearchButtonContainer button');
+    const clientCodeInput = $('#clientCodeInput');
+    const accountNumber = document.getElementById('accountNumber').value;
+    document.getElementById('accountNumberInput').value = accountNumber;
+
     if (isSuccess) {
         $('#modalMessage').html('<div class="alert alert-success">Client trouvé avec succès !</div>');
-        $('#clientCode').text(clientCode);  
+        clientCodeInput.val(clientCode);  
         $('#clientCodeContainer').show();  
+        $('#modalSearchButtonContainer').show();  
         searchButton.prop('disabled', false);
-        } else {
+    } else {
         $('#modalMessage').html('<div class="alert alert-danger">Aucun client trouvé pour ce numéro de compte.</div>');
-        $('#clientCode').text('');  
+        clientCodeInput.val('');  
         $('#clientCodeContainer').hide();  
-        searchButton.prop('disabled', true);
+        $('#modalSearchButtonContainer').hide(); 
     }
 
     const modal = new bootstrap.Modal(document.getElementById('clientModal'));
@@ -37,8 +42,10 @@ async function getClientIDWebserviceCall(accountNumber) {
 
         const data = await response.json();
 
-        if (data && data.client) {
-            return { success: true, clientCode: data.client };
+        console.log('SOAP Response:', data);
+
+        if (data && data.CUSTOMER) {
+            return { success: true, clientCode: data.CUSTOMER };
         } else {
             return { success: false };
         }

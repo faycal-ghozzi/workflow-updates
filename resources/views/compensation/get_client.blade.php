@@ -20,25 +20,31 @@
 <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content shadow-lg">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="clientModalLabel">Résultat de la recherche</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
-            </div>
-            <div class="modal-body text-center">
-                <div id="modalMessage" class="mb-3"></div>
-
-                <!-- Client code container, hidden by default -->
-                <div class="d-flex justify-content-center mb-3" id="clientCodeContainer" style="display:none;">
-                    <p id="clientCode" class="form-control-plaintext fs-5 text-primary" style="max-width: 300px;"></p>
+            <form method="POST" action="{{ route('compensation.add_request') }}">
+                @csrf
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="clientModalLabel">Résultat de la recherche</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
-
-                <!-- Rechercher Client button, hidden by default -->
-                <div class="d-flex justify-content-center mt-3" id="modalSearchButtonContainer" style="display:none;">
-                    <button id="modalSearchButton" class="btn btn-success">
-                        <i class="bi bi-search"></i> Rechercher Client
-                    </button>
+                <div class="modal-body text-center">
+                    <div id="modalMessage" class="mb-3"></div>
+            
+                    <div class="d-flex justify-content-center mb-3" id="clientCodeContainer" style="display:none;">
+                        <input type="text" readonly id="clientCodeInput" name="client_code" 
+                               class="form-control-plaintext fs-5 text-primary text-center" 
+                               style="max-width: 300px; border: none; background: transparent;">
+                    </div>
+            
+                    <!-- Hidden input for account number -->
+                    <input type="hidden" id="accountNumberInput" name="account_number" value="">
+            
+                    <div class="d-flex justify-content-center mt-3" id="modalSearchButtonContainer" style="display:none;">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-search"></i> Rechercher Client
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>            
         </div>
     </div>
 </div>
