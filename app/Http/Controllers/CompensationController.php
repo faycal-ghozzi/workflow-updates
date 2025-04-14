@@ -254,6 +254,8 @@ class CompensationController extends Controller
         return view('compensation.get_client');
     }
 
+
+    // TODO : Improve this and the view related 3000+ lines is a mess
     public function checkClient($accountNumber)
     {
         $params = [
