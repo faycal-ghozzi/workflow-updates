@@ -188,34 +188,63 @@ class CompensationController extends Controller
 
     public function etatJournalier(Request $request, AgencyHelper $agencyHelper)
     {
-        if ($request->ajax()) {
+        try {
+            if ($request->ajax()) {
+                $today = date('Y-m-d');
 
-            $today = date('Y-m-d');
+                $query = Compensation::with(['avis_comp', 'impaye_client'])
+                    ->whereDate('created_at', $today)
+                    ->where('status', 15)
+                    ->select(
+                        'id',
+                        'code_client',
+                        'account_number',
+                        'nom_client',
+                        'name_secteur',
+                        'classement_client',
+                        'solde_compensation',
+                        'date_compensation',
+                        'updated_at',
+                        'val_compensation',
+                        'status',
+                        'code_agence'
+                    );
 
-            $query = Compensation::with('avis_comp')
-                ->whereDate('created_at', $today)
-                ->where('status', 15)
-                ->select('id', 'code_client', 'account_number', 'nom_client', 'name_secteur', 'classement_client', 'solde_compensation', 'date_compensation', 'updated_at', 'val_compensation', 'status', 'code_agence')
-                ->orderBy('created_at', 'DESC');
-
-            return DataTables::of($query)
-                ->editColumn('date_compensation', function($comp) {
-                    return $comp->date_compensation->format('Y-m-d');
-                })
-                ->editColumn('status', function($comp) {
-                    $status = \App\Helpers\StatusHelper::getStatusLabel($comp->status);
-                    if ($status) {
-                        return '<span class="badge bg-' . $status['badge'] . '">' . $status['label'] . '</span>';
-                    }
-                    return '';
-                })
-                ->editColumn('code_agence', function($comp) use ($agencyHelper) {
-                    return $agencyHelper->getAgencyName($comp->code_agence);
-                })
-                ->rawColumns(['status'])
-                ->make(true);
+                return DataTables::of($query)
+                    ->addIndexColumn()
+                    ->editColumn('date_compensation', function($comp) {
+                        return optional($comp->date_compensation)->format('d-m-Y');
+                    })
+                    ->editColumn('updated_at', function($comp) {
+                        return optional($comp->updated_at)->format('d-m-Y');
+                    })
+                    ->editColumn('code_agence', function($comp) use ($agencyHelper) {
+                        return $agencyHelper->getAgencyName($comp->code_agence);
+                    })
+                    ->addColumn('total_debit', function($comp) {
+                        $val_compensation = $comp->val_compensation ?? 0;
+                        $impaye_client = $comp->impaye_client->sum('montant_impaye') ?? 0;
+                        return $val_compensation + $impaye_client;
+                    })
+                    ->editColumn('status', function($comp) {
+                        $status = \App\Helpers\StatusHelper::getStatusLabel($comp->status);
+                        return $status ? '<span class="badge bg-' . $status['badge'] . '">' . $status['label'] . '</span>' : '';
+                    })
+                    ->addColumn('dernier_avis', function($comp) {
+                        $lastAvis = $comp->avis_comp
+                            ->where('created_at', '<=', $comp->updated_at)
+                            ->last();
+                        return $lastAvis ? $lastAvis->text_avis : '';
+                    })
+                    ->rawColumns(['status'])
+                    ->make(true);
+            }
+            
+            return view('compensation.etat_journalier');
+        } catch (\Exception $e) {
+            Log::error('EtatJournalier Error: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        return view('compensation.etat_journalier');
     }
 
     public function extrait(Request $request, AgencyHelper $agencyHelper){

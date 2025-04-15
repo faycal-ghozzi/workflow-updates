@@ -59,18 +59,29 @@ $('#resetBtn').on('click', function () {
 $('#liste-etat-journalier').DataTable({
     processing: true,
     serverSide: true,
-    ajax: 'compensation/etat_journalier',
+    ajax: {
+        url: '/compensation/etat_journalier',
+        type: 'GET',
+        error: function (xhr, error, thrown) {
+            console.error('DataTables error:', error, thrown);
+        }
+    },
     columns: [
-        { data: 'code_client' },
-        { data: 'account_number' },
-        { data: 'nom_client' },
-        { data: 'name_secteur' },
-        { data: 'classement_client' },
-        { data: 'solde_compensation' },
-        { data: 'date_compensation' },
-        { data: 'val_compensation' },
-        { data: 'status', orderable: false, searchable: false },
-        { data: 'code_agence' }
+        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+        { data: 'code_client', name: 'code_client' },
+        { data: 'account_number', name: 'account_number' },
+        { data: 'nom_client', name: 'nom_client' },
+        { data: 'name_secteur', name: 'name_secteur' },
+        { data: 'classement_client', name: 'classement_client' },
+        { data: 'solde_compensation', name: 'solde_compensation' },
+        { data: 'date_compensation', name: 'date_compensation' },
+        { data: 'updated_at', name: 'updated_at' },
+        { data: 'code_agence', name: 'code_agence' },
+        { data: 'total_debit', name: 'total_debit' },
+        { data: 'status', name: 'status', orderable: false },
+        { data: 'dernier_avis', name: 'dernier_avis' }
     ],
+    dom: 'Bfrtip',
+    buttons: ['print', 'excel'],
     language: datatableLanguage
 });
