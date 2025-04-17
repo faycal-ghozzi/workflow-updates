@@ -310,104 +310,193 @@ class CompensationController extends Controller
         return response()->json(false);
     }
 
-    public function addRequest(Request $request)
-    {
+    public function fetchWsData(Request $request, $type){
         $id_client = $request['client_code'];
         $account = $request['account_number'];
-        $agences = Agence::distinct()->get();
-        $derniere_compensation = Compensation::where('code_client', $id_client)->orderBy('created_at', 'DESC')->first();
 
         $fetchSoapData = function ($service, $specificParams) {
             $params = $this->soapService->buildParams($service, $specificParams);
             return $this->soapService->request($service, $params);
         };
 
-        // Infos Globales
-        $listArrayInfGlob = $fetchSoapData('WSINFORMATIONGLOB', [
-            'enquiryInputCollection' => [
-                ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
-                ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
-            ]
-        ]) ?? [];
+        $data = [];
 
-        // Engagements Gerant
-        $listArrayEngGer = $fetchSoapData('WSENGAGEMENTGERANT', [
-            'enquiryInputCollection' => [
-                ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
-            ]
-        ]) ?? [];
+        switch ($type) {
+            case 'informations_generales':
+                $data['result'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+                return view('compensation.partials.informations_generales', $data);
+            
+            case 'compensation':
+                $data['result'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+                return view('compensation.partials.compensation', $data);
+        
+            case 'client':
+                $data['result'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+                return view('compensation.partials.client', $data);
+            
+            case 'derniere_compensation':
+                $data['result'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+                return view('compensation.partials.derniere_compensation', $data);
+            
+            case 'beneficiaire':
+                $data['result'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+                return view('compensation.partials.beneficiaire', $data);
+            
+            case 'commentaires':
+                $data['result'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+                return view('compensation.partials.commentaires', $data);
+            
+            case 'comptes_client':
+                $data['result'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+                return view('compensation.partials.comptes_client', $data);
+        }
+    }
 
-        // Engagements Client
-        $listArrayEngCred = $fetchSoapData('WSENGAGEMENTCLIENT', [
-            'enquiryInputCollection' => [
-                ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
-            ]
-        ]) ?? [];
+    public function addRequest(Request $request){
+        $id_client = $request->input('client_code');
+        $account = $request->input('account_number');
 
-        // Placement
-        $listArrayPlacement = $fetchSoapData('WSPLACEMENT', [
-            'enquiryInputCollection' => [
-                ["columnName" => "CUSTOMER.ID", "criteriaValue" => $id_client, "operand" => "EQ"]
-            ]
-        ]) ?? [];
-    
-        // Limite
-        $listArrayLimit = $fetchSoapData('WSLIMIT', [
-            'enquiryInputCollection' => [
-                ["columnName" => "LINE.ID", "criteriaValue" => $id_client . '.0010000.01', "operand" => "EQ"]
-            ]
-        ]) ?? [];
-
-        // Impaye
-        $listArrayImp = $fetchSoapData('WSWORKFLOWCHQIMPAYE', [
-            'enquiryInputCollection' => [
-                ["columnName" => "CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
-            ]
-        ]) ?? [];
-
-        // Tombé echance
-        $listArrayTMBE = $fetchSoapData('WSTOMBEECHEANCE', [
-            'enquiryInputCollection' => [
-                ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
-            ]
-        ]) ?? [];
-
-        // En cours cheque
-        $listArrayENCR = $fetchSoapData('WSENCOURSCHEQUE', [
-            'enquiryInputCollection' => [
-                ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
-            ]
-        ]) ?? [];
-
-        // Leasing
-        $listArrayLeas = $fetchSoapData('WSCOMPTELEASINGCHQ', [
-            'enquiryInputCollection' => [
-                ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
-            ]
-        ]) ?? [];
-
-        // Incident de paiement
-        $listArrayIP = $fetchSoapData('WSINCIDENTPAIEMENT', [
-            'enquiryInputCollection' => [
-                ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
-            ]
-        ]) ?? [];
-
-        // Effet en cours - Service Inexistant
-        // $listArrayEFFET = $fetchSoapData('WSEFFETENCOURS', [
-        //     'enquiryInputCollection' => [
-        //         ["columnName" => "COMPTE.CEDANT", "criteriaValue" => $account, "operand" => "EQ"]
-        //     ]
-        // ]) ?? [];
-
-        $first_line = $listArrayLimit[0] ?? [];
-        $second_line = $listArrayLimit[1] ?? [];
+        $agences = Agence::distinct()->get();
+        $derniere_compensation = Compensation::where('code_client', $id_client)->orderBy('created_at', 'DESC')->first();
 
         return view('compensation.add_request', compact(
-            'agences', 'derniere_compensation', 
-            'listArrayInfGlob', 'listArrayEngGer', 'listArrayEngCred', 
-            'listArrayPlacement', 'listArrayImp', 'listArrayTMBE', 'listArrayENCR', 'listArrayLeas', 
-            'listArrayIP', 'first_line', 'second_line'
-        ));
+                    'agences', 'derniere_compensation', 'id_client', 'account'
+                ));
     }
+
+    // public function addRequest(Request $request)
+    // {
+    //     $id_client = $request['client_code'];
+    //     $account = $request['account_number'];
+    //     $agences = Agence::distinct()->get();
+    //     $derniere_compensation = Compensation::where('code_client', $id_client)->orderBy('created_at', 'DESC')->first();
+
+    //     $fetchSoapData = function ($service, $specificParams) {
+    //         $params = $this->soapService->buildParams($service, $specificParams);
+    //         return $this->soapService->request($service, $params);
+    //     };
+
+    //     // Infos Globales
+    //     $listArrayInfGlob = $fetchSoapData('WSINFORMATIONGLOB', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+    //             ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // Engagements Gerant
+    //     $listArrayEngGer = $fetchSoapData('WSENGAGEMENTGERANT', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // Engagements Client
+    //     $listArrayEngCred = $fetchSoapData('WSENGAGEMENTCLIENT', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // Placement
+    //     $listArrayPlacement = $fetchSoapData('WSPLACEMENT', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "CUSTOMER.ID", "criteriaValue" => $id_client, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+    
+    //     // Limite
+    //     $listArrayLimit = $fetchSoapData('WSLIMIT', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "LINE.ID", "criteriaValue" => $id_client . '.0010000.01', "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // Impaye
+    //     $listArrayImp = $fetchSoapData('WSWORKFLOWCHQIMPAYE', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // Tombé echance
+    //     $listArrayTMBE = $fetchSoapData('WSTOMBEECHEANCE', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // En cours cheque
+    //     $listArrayENCR = $fetchSoapData('WSENCOURSCHEQUE', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // Leasing
+    //     $listArrayLeas = $fetchSoapData('WSCOMPTELEASINGCHQ', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // Incident de paiement
+    //     $listArrayIP = $fetchSoapData('WSINCIDENTPAIEMENT', [
+    //         'enquiryInputCollection' => [
+    //             ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+    //         ]
+    //     ]) ?? [];
+
+    //     // Effet en cours - Service Inexistant
+    //     // $listArrayEFFET = $fetchSoapData('WSEFFETENCOURS', [
+    //     //     'enquiryInputCollection' => [
+    //     //         ["columnName" => "COMPTE.CEDANT", "criteriaValue" => $account, "operand" => "EQ"]
+    //     //     ]
+    //     // ]) ?? [];
+
+    //     $first_line = $listArrayLimit[0] ?? [];
+    //     $second_line = $listArrayLimit[1] ?? [];
+
+    //     return view('compensation.add_request', compact(
+    //         'agences', 'derniere_compensation', 
+    //         'listArrayInfGlob', 'listArrayEngGer', 'listArrayEngCred', 
+    //         'listArrayPlacement', 'listArrayImp', 'listArrayTMBE', 'listArrayENCR', 'listArrayLeas', 
+    //         'listArrayIP', 'first_line', 'second_line'
+    //     ));
+    // }
 }

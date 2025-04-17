@@ -18,12 +18,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/compensation/etat_journalier', [CompensationController::class, 'etatJournalier'])->name('compensation.etat_journalier');
     Route::get('/compensation/extrait', [CompensationController::class, 'extrait'])->name('compensation.extrait');
     Route::get('/compensation/get_client', [CompensationController::class, 'getClient'])->name('compensation.get_client');
+    Route::get('/compensation/wsdata/{type}', [CompensationController::class, 'fetchWsData']);
 
 
 
     Route::post('/compensation/get_client/check/{accountNumber}', [CompensationController::class, 'checkClient'])->name('compensation.check_client');
     Route::post('/compensation/get_client/add_request', [CompensationController::class, 'addRequest'])->name('compensation.add_request');
-
 
     Route::get('/compensation/view/{id}', function ($id) {
         return "Testing view route OK! ID: {$id}";
