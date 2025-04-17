@@ -31,25 +31,25 @@
 
         <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">{{ __('Informations Générales') }}</a>
+            <a class="nav-link active" id="custom-content-above-home-tab" data-bs-toggle="tab" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">{{ __('Informations Générales') }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="custom-content-above-profile-tab" data-toggle="pill" href="#custom-content-above-profile" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">{{ __('Compensation') }}</a>
+            <a class="nav-link" id="custom-content-above-profile-tab" data-bs-toggle="tab" href="#custom-content-above-profile" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">{{ __('Compensation') }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="custom-content-above-client-tab" data-toggle="pill" href="#custom-content-above-client" role="tab" aria-controls="custom-content-above-client" aria-selected="false">{{ __('Client') }}</a>
+            <a class="nav-link" id="custom-content-above-client-tab" data-bs-toggle="tab" href="#custom-content-above-client" role="tab" aria-controls="custom-content-above-client" aria-selected="false">{{ __('Client') }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="custom-content-above-comp-tab" data-toggle="pill" href="#custom-content-above-comp" role="tab" aria-controls="custom-content-above-comp" aria-selected="false">Dérniere compensation</a>
+            <a class="nav-link" id="custom-content-above-comp-tab" data-bs-toggle="tab" href="#custom-content-above-comp" role="tab" aria-controls="custom-content-above-comp" aria-selected="false">Dérniere compensation</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="custom-content-above-ben-tab" data-toggle="pill" href="#custom-content-above-ben" role="tab" aria-controls="custom-content-above-ben" aria-selected="false">{{ __('Bénéficiaire') }}</a>
+            <a class="nav-link" id="custom-content-above-ben-tab" data-bs-toggle="tab" href="#custom-content-above-ben" role="tab" aria-controls="custom-content-above-ben" aria-selected="false">{{ __('Bénéficiaire') }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="custom-content-above-messages-tab" data-toggle="pill" href="#custom-content-above-messages" role="tab" aria-controls="custom-content-above-messages" aria-selected="false">{{ __('Commentaires') }}</a>
+            <a class="nav-link" id="custom-content-above-messages-tab" data-bs-toggle="tab" href="#custom-content-above-messages" role="tab" aria-controls="custom-content-above-messages" aria-selected="false">{{ __('Commentaires') }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="custom-content-above-compte-tab" data-toggle="pill" href="#custom-content-above-compte" role="tab" aria-controls="custom-content-above-comptes" aria-selected="false">{{ __('Comptes Client') }}</a>
+            <a class="nav-link" id="custom-content-above-compte-tab" data-bs-toggle="tab" href="#custom-content-above-compte" role="tab" aria-controls="custom-content-above-comptes" aria-selected="false">{{ __('Comptes Client') }}</a>
         </li>
         </ul>
         <div class="tab-content" id="custom-content-above-tabContent">
@@ -69,51 +69,7 @@
                             <div class="form-group">
                                 <label>{{ __('Agence') }} :</label>
                                     <input type="hidden" name="code_agence" value="{{ Auth::user()->agence_id }}"/>
-                                    @if (Auth::user()->agence_id == 1)
-                                        <input type="text" class="form-control" value="BTL agence Tunis" readonly/>
-                                        @elseif (Auth::user()->agence_id == 3)
-                                        <input type="text" class="form-control" value="BTL agence Sfax" readonly/>
-                                        @elseif (Auth::user()->agence_id == 4)
-                                        <input type="text" class="form-control" value="BTL agence Nabeul" readonly/>
-                                        @elseif (Auth::user()->agence_id == 5)
-                                        <input type="text" class="form-control" value="BTL agence Petite Ariana" readonly/>
-                                        @elseif (Auth::user()->agence_id == 6)
-                                        <input type="text" class="form-control" value="BTL agence Ben Arous" readonly/>
-                                        @elseif (Auth::user()->agence_id == 7)
-                                        <input type="text" class="form-control" value="BTL agence Den Den" readonly/>
-                                        @elseif (Auth::user()->agence_id == 8)
-                                        <input type="text" class="form-control" value="BTL agence Sousse" readonly/>
-                                        @elseif (Auth::user()->agence_id == 9)
-                                        <input type="text" class="form-control" value="BTL agence Gabes" readonly/>
-                                        @elseif (Auth::user()->agence_id == 11)
-                                        <input type="text" class="form-control" value="BTL agence Sfax ELBOSTENE" readonly/>
-                                        @elseif (Auth::user()->agence_id == 12)
-                                        <input type="text" class="form-control" value="BTL agence Bizerte" readonly/>
-                                        @elseif (Auth::user()->agence_id == 13)
-                                        <input type="text" class="form-control" value="BTL agence Nabeul 2" readonly/>
-                                        @elseif (Auth::user()->agence_id == 14)
-                                        <input type="text" class="form-control" value="BTL agence Mednine" readonly/>
-                                        @elseif (Auth::user()->agence_id == 15)
-                                        <input type="text" class="form-control" value="BTL agence Monastir" readonly/>
-                                        @elseif (Auth::user()->agence_id == 16)
-                                        <input type="text" class="form-control" value="BTL agence Centre Urbain Nord" readonly/>
-                                        @elseif (Auth::user()->agence_id == 17)
-                                        <input type="text" class="form-control" value="BTL agence Enasr" readonly/>
-                                        @elseif (Auth::user()->agence_id == 18)
-                                        <input type="text" class="form-control" value="BTL agence Ariana" readonly/>
-                                        @elseif (Auth::user()->agence_id == 19)
-                                        <input type="text" class="form-control" value="BTL agence Lac 2" readonly/>
-                                        @elseif (Auth::user()->agence_id == 20)
-                                        <input type="text" class="form-control" value="BTL agence Aouina" readonly/>
-                                        @elseif (Auth::user()->agence_id == 21)
-                                        <input type="text" class="form-control" value="BTL agence Rasjdir" readonly/>
-                                        @elseif (Auth::user()->agence_id == 22)
-                                        <input type="text" class="form-control" value="BTL agence Marsa" readonly/>
-                                        @elseif (Auth::user()->agence_id == 23)
-                                        <input type="text" class="form-control" value="BTL agence Djerba" readonly/>
-                                        @elseif (Auth::user()->agence_id == 24)
-                                        <input type="text" class="form-control" value="BTL agence Megrine" readonly/>
-                                    @endif
+                                    <input type="text" class="form-control" value="{{ $agencyHelper->getAgencyName(Auth::user()->agence_id) }}" readonly/>
                             </div>
                         <!-- /.form-group -->
                         </div>
@@ -865,29 +821,29 @@
                                                     }
                                                 ?>
 
-<?php
-if(isset($listArrayIP->MOTIFREJET)){
-?>
-<td><input class="form-control" name="motifIncident[]" value="{{ $listArrayIP->MOTIFREJET }}" readonly></td>
-<?php
-}else{
-?>
-<td><input class="form-control" name="motifIncident[]" value=" " readonly></td>
-<?php
-}
-?>
-                                                <input type="hidden" name="DATEREGULEIncident[]" value="{{ $listArrayIP->DATEREGULE }}">
                                                 <?php
-if(isset($listArrayIP->STADEINC)){
-?>
-<input type="hidden" class="form-control" name="STADEIncident[]" value="{{ $listArrayIP->STADEINC }}">
-<?php
-}else{
-?>
-<input type="hidden" class="form-control" name="STADEIncident[]" value=" " >
-<?php
-}
-?>
+                                                if(isset($listArrayIP->MOTIFREJET)){
+                                                ?>
+                                                <td><input class="form-control" name="motifIncident[]" value="{{ $listArrayIP->MOTIFREJET }}" readonly></td>
+                                                <?php
+                                                }else{
+                                                ?>
+                                                <td><input class="form-control" name="motifIncident[]" value=" " readonly></td>
+                                                <?php
+                                                }
+                                                ?>
+                                                                                                <input type="hidden" name="DATEREGULEIncident[]" value="{{ $listArrayIP->DATEREGULE }}">
+                                                                                                <?php
+                                                if(isset($listArrayIP->STADEINC)){
+                                                ?>
+                                                <input type="hidden" class="form-control" name="STADEIncident[]" value="{{ $listArrayIP->STADEINC }}">
+                                                <?php
+                                                }else{
+                                                ?>
+                                                <input type="hidden" class="form-control" name="STADEIncident[]" value=" " >
+                                                <?php
+                                                }
+                                                ?>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -962,28 +918,28 @@ if(isset($listArrayIP->STADEINC)){
                                             <td><input class="form-control" name="ribIncident" value="{{ $listArrayIP['RIBBENEF'] }}" readonly></td>
                                             <td><input class="form-control" name="nomBenefIncident" value="{{ $listArrayIP['NOMBENEF'] }}" readonly></td>
                                             <?php
-if(isset($listArrayIP['MOTIFREJET'])){
-?>
-<td><input class="form-control" name="motifIncident" value="{{ $listArrayIP['MOTIFREJET'] }}" readonly></td>
-<?php
-}else{
-?>
-<td><input class="form-control" name="motifIncident" value=" " readonly></td>
-<?php
-}
-?>
-                                            <input type="hidden" name="DATEREGULEIncident" value="{{ $listArrayIP['DATEREGULE'] }}">
+                                            if(isset($listArrayIP['MOTIFREJET'])){
+                                            ?>
+                                            <td><input class="form-control" name="motifIncident" value="{{ $listArrayIP['MOTIFREJET'] }}" readonly></td>
                                             <?php
-if(isset($listArrayIP['STADEINC'])){
-?>
-<input type="hidden" class="form-control" name="STADEIncident" value="{{ $listArrayIP['STADEINC'] }}" >
-<?php
-}else{
-?>
-<input type="hidden" class="form-control" name="STADEIncident" value=" " >
-<?php
-}
-?>
+                                            }else{
+                                            ?>
+                                            <td><input class="form-control" name="motifIncident" value=" " readonly></td>
+                                            <?php
+                                            }
+                                            ?>
+                                                                                        <input type="hidden" name="DATEREGULEIncident" value="{{ $listArrayIP['DATEREGULE'] }}">
+                                                                                        <?php
+                                            if(isset($listArrayIP['STADEINC'])){
+                                            ?>
+                                            <input type="hidden" class="form-control" name="STADEIncident" value="{{ $listArrayIP['STADEINC'] }}" >
+                                            <?php
+                                            }else{
+                                            ?>
+                                            <input type="hidden" class="form-control" name="STADEIncident" value=" " >
+                                            <?php
+                                            }
+                                            ?>
                                         </tr>
                                     @endif
 
@@ -1166,16 +1122,17 @@ if(isset($listArrayIP['STADEINC'])){
                                                         <input type="hidden" name="encours_compensation" value="notEmty">
                                                         <td><input class="form-control" name="referenceEnc[]" value="{{ $listArrayENCR->REFERENCE }}" readonly></td>
                                                         <?php
-                                                    if(isset($listArrayENCR->AMOUNT)){
-                                                ?>
-                                                    <td><input class="form-control" name="montantEnc[]" value="{{ $listArrayENCR->AMOUNT }}" readonly></td>
-                                                <?php
-                                                    }else{
-                                                ?>
-                                                    <td><input class="form-control" name="montantEnc[]" value=" " readonly></td>
-                                                <?php
-                                                    }
-                                                ?>
+                                                            if(isset($listArrayENCR->AMOUNT)){
+                                                        ?>
+                                                        <td>
+                                                            <input class="form-control" name="montantEnc[]" value="{{ $listArrayENCR->AMOUNT }}" readonly></td>
+                                                            <?php
+                                                                }else{
+                                                            ?>
+                                                                <td><input class="form-control" name="montantEnc[]" value=" " readonly></td>
+                                                            <?php
+                                                                }
+                                                            ?>
                                                             <?php
                                                             if(isset($listArrayENCR->CURRENCY)){
                                                             ?>
@@ -1194,13 +1151,15 @@ if(isset($listArrayIP['STADEINC'])){
                                                             <?php
                                                                 }else{
                                                             ?>
-                                                                <td><input class="form-control" name="numbord[]" value=" " readonly></td>
+                                                                <td><input class="form-control" name="numbord[]" value=" " readonly>
+                                                        </td>
                                                             <?php
                                                                 }
                                                             ?>
-                                                        <td><?php   $dateConvertEC = strtotime($listArrayENCR->DATEENCAISS);
-                                                            $dateFinaleEC = date("d/m/Y",$dateConvertEC);
-                                                            $datef = $dateFinaleEC ?><input class="form-control" name="dateEnc[]" value="{{ $datef }}" readonly>
+                                                        <td>
+                                                            <?php   $dateConvertEC = strtotime($listArrayENCR->DATEENCAISS);
+                                                                $dateFinaleEC = date("d/m/Y",$dateConvertEC);
+                                                                $datef = $dateFinaleEC ?><input class="form-control" name="dateEnc[]" value="{{ $datef }}" readonly>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -1259,89 +1218,6 @@ if(isset($listArrayIP['STADEINC'])){
                             </div>
 
                             <br>
-
-                            <h5 class="card-description text-info">
-                                --- {{ __('Encours effet à l\'encaissement') }} ---
-                            </h5>
-                            <hr>
-                            <div class="form-group">
-                                <div class="table-responsive">
-                                    <table class="table ">
-                                        <thead>
-                                            <th>ID</th>
-                                            <th>NUM EFFET</th>
-                                            <th>NOM TIRE</th>
-                                            <th>RIB TIRE</th>
-                                            <th>MONTANT</th>
-                                            <th>DATE ECHEANCE</th>
-                                            <th>DATE REMISE</th>
-                                        </thead>
-                                        <tbody>
-                                            @if ((count($listArrayEFFET)>0))
-                                            <?php
-                                                if(isset($listArrayEFFET[0])){
-                                            ?>
-                                            @foreach ($listArrayEFFET as $listArrayEFFET)
-                                                @if ($listArrayEFFET->STATUT == 4)
-                                                    <tr>
-                                                        <input type="hidden" name="encours_effet" value="notempty">
-                                                        <td><input class="form-control" name="cfuEncours[]" value="{{ $listArrayEFFET->ID }}" readonly></td>
-                                                        <td><input class="form-control" name="numEffetEncours[]" value="{{ $listArrayEFFET->NUMEFFET }}" readonly></td>
-                                                        <td><input class="form-control" name="nomTireEffet[]" value="{{ $listArrayEFFET->NOMTIRE }}" readonly></td>
-                                                        <td><input class="form-control" name="ribTireEffet[]" value="{{ $listArrayEFFET->RIBTIRE }}" readonly></td>
-                                                        <td><input class="form-control" name="montantEffet[]" value="{{ $listArrayEFFET->MONTANTPRINCIPAL }}" readonly></td>
-                                                        <td>
-                                                            <?php
-                                                                $dateConvertimp = strtotime($listArrayEFFET->DATEECHEANCE);
-                                                                $DATEECHEANCE = date("d/m/Y",$dateConvertimp);
-                                                            ?>
-                                                            <input class="form-control" name="dateEcheanceEffet[]" value="{{ $DATEECHEANCE }}" readonly>
-                                                        </td>
-                                                        <td>
-                                                            <?php
-                                                                $dateConvertimp = strtotime($listArrayEFFET->DATEREMISE);
-                                                                $DATEREMISE = date("d/m/Y",$dateConvertimp);
-                                                            ?>
-                                                            <input class="form-control" name="dateRemiseEffet[]" value="{{ $DATEREMISE }}" readonly>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
-
-                                            <?php
-                                                }else{
-                                            ?>
-
-                                            @if ($listArrayEFFET['STATUT'] == 4)
-                                                <tr>
-                                                    <td><input class="form-control" name="cfuEncours" value="{{ $listArrayEFFET['ID'] }}" readonly></td>
-                                                    <td><input class="form-control" name="numEffetEncours" value="{{ $listArrayEFFET['NUMEFFET'] }}" readonly></td>
-                                                    <td><input class="form-control" name="nomTireEffet" value="{{ $listArrayEFFET['NOMTIRE'] }}" readonly></td>
-                                                    <td><input class="form-control" name="ribTireEffet" value="{{ $listArrayEFFET['RIBTIRE'] }}" readonly></td>
-                                                    <td><input class="form-control" name="montantEffet" value="{{ $listArrayEFFET['MONTANTPRINCIPAL'] }}" readonly></td>
-                                                    <td>
-                                                        <?php   $dateConvertimp = strtotime($listArrayEFFET['DATEECHEANCE']);
-                                                            $DATEECHEANCE = date("d/m/Y",$dateConvertimp);
-                                                        ?>
-                                                        <input class="form-control" name="dateEcheanceEffet" value="{{ $DATEECHEANCE}}" readonly>
-                                                    </td>
-                                                    <td>
-                                                        <?php   $dateConvertimp = strtotime($listArrayEFFET['DATEREMISE']);
-                                                            $DATEREMISE = date("d/m/Y",$dateConvertimp);
-                                                        ?>
-                                                        <input class="form-control" name="dateRemiseEffet" value="{{ $DATEREMISE}}" readonly>
-                                                    </td>
-                                                </tr>
-                                            @endif
-
-                                            <?php
-                                                }
-                                            ?>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
 
                             <br>
                             <h5 class="card-description text-info">--- {{ __('Couverture') }} ---</h5>
@@ -1671,16 +1547,16 @@ if(isset($listArrayIP['STADEINC'])){
                                                         <tr>
                                                             <td><input class="form-control" name="referenceTombe" value="{{ $listArrayTMBE['ENGAGEMENT'] }}" readonly></td>
                                                             <?php
-if( isset($listArrayTMBE['LIBELLECREDIT']) ){
-?>
-<td><input class="form-control" name="natureTombe" value="{{ $listArrayTMBE['LIBELLECREDIT'] }}" readonly></td>
-<?php
-}else{
-?>
-<td><input class="form-control" name="natureTombe" value=" " readonly></td>
-<?php
-}
-?>
+                                                                if( isset($listArrayTMBE['LIBELLECREDIT']) ){
+                                                                ?>
+                                                                <td><input class="form-control" name="natureTombe" value="{{ $listArrayTMBE['LIBELLECREDIT'] }}" readonly></td>
+                                                                <?php
+                                                                }else{
+                                                                ?>
+                                                                <td><input class="form-control" name="natureTombe" value=" " readonly></td>
+                                                                <?php
+                                                                }
+                                                            ?>
                                                             <td><input class="form-control" name="montantTombe" value="{{ $listArrayTMBE['ENCOURS'] }}" readonly></td>
                                                             <td><input class="form-control" name="deviseTombe" value="{{ $listArrayTMBE['CURRENCY'] }}" readonly></td>
                                                             <td><?php   $dateConvertDE = strtotime($listArrayTMBE['ECHEDATE']);
@@ -1727,45 +1603,7 @@ if( isset($listArrayTMBE['LIBELLECREDIT']) ){
                     <div class="form-group">
                         <label>{{ __('Agence') }} :</label>
                         <input type="hidden" name="code_agence" value="{{ Auth::user()->agence_id }}"/>
-                        @if (Auth::user()->agence_id == 1)
-                        <input type="text" class="form-control" value="BTL agence de Tunis" readonly/>
-                        @elseif (Auth::user()->agence_id == 3)
-                        <input type="text" class="form-control" value="BTL agence de Sfax" readonly/>
-                        @elseif (Auth::user()->agence_id == 4)
-                        <input type="text" class="form-control" value="BTL agence de Nabeul" readonly/>
-                        @elseif (Auth::user()->agence_id == 5)
-                        <input type="text" class="form-control" value="BTL agence de Petite Ariana" readonly/>
-                        @elseif (Auth::user()->agence_id == 6)
-                        <input type="text" class="form-control" value="BTL agence de Ben Arous" readonly/>
-                        @elseif (Auth::user()->agence_id == 7)
-                        <input type="text" class="form-control" value="BTL agence de Den Den" readonly/>
-                        @elseif (Auth::user()->agence_id == 8)
-                        <input type="text" class="form-control" value="BTL agence de Sousse" readonly/>
-                        @elseif (Auth::user()->agence_id == 9)
-                        <input type="text" class="form-control" value="BTL agence de Gabes" readonly/>
-                        @elseif (Auth::user()->agence_id == 11)
-                        <input type="text" class="form-control" value="BTL agence de Sfax ELBOSTENE" readonly/>
-                        @elseif (Auth::user()->agence_id == 12)
-                        <input type="text" class="form-control" value="BTL agence de Bizerte" readonly/>
-                        @elseif (Auth::user()->agence_id == 13)
-                        <input type="text" class="form-control" value="BTL agence de Nabeul 2" readonly/>
-                        @elseif (Auth::user()->agence_id == 14)
-                        <input type="text" class="form-control" value="BTL agence de Mednine" readonly/>
-                        @elseif (Auth::user()->agence_id == 15)
-                        <input type="text" class="form-control" value="BTL agence de Monastir" readonly/>
-                        @elseif (Auth::user()->agence_id == 16)
-                        <input type="text" class="form-control" value="BTL agence de Centre Urbain Nord" readonly/>
-                        @elseif (Auth::user()->agence_id == 17)
-                        <input type="text" class="form-control" value="BTL agence de Enasr" readonly/>
-                        @elseif (Auth::user()->agence_id == 18)
-                        <input type="text" class="form-control" value="BTL agence de Ariana" readonly/>
-                        @elseif (Auth::user()->agence_id == 19)
-                        <input type="text" class="form-control" value="BTL agence de Lac 2" readonly/>
-                        @elseif (Auth::user()->agence_id == 20)
-                        <input type="text" class="form-control" value="BTL agence de Aouina" readonly/>
-                        @elseif (Auth::user()->agence_id == 24)
-                        <input type="text" class="form-control" value="BTL agence de Megrine" readonly/>
-                        @endif
+                        <input type="text" class="form-control" value="{{ $agencyHelper->getAgencyName(Auth::user()->agence_id) }}" readonly/>
                     </div>
                 <!-- /.form-group -->
                 </div>
@@ -2952,88 +2790,6 @@ if( isset($listArrayTMBE['LIBELLECREDIT']) ){
                     </div>
                     <br>
 
-                    <h5 class="card-description text-info">
-                        --- {{ __('Encours effet à l\'encaissement') }} ---
-                    </h5>
-                    <hr>
-                    <div class="form-group">
-                        <div class="table-responsive">
-                            <table class="table ">
-                                <thead>
-                                    <th>ID</th>
-                                    <th>NUM EFFET</th>
-                                    <th>NOM TIRE</th>
-                                    <th>RIB TIRE</th>
-                                    <th>MONTANT</th>
-                                    <th>DATE ECHEANCE</th>
-                                    <th>DATE REMISE</th>
-                                </thead>
-                                <tbody>
-                                    @if ((count($listArrayEFFET)>0))
-                                    <?php
-                                        if(isset($listArrayEFFET[0])){
-                                    ?>
-                                    @foreach ($listArrayEFFET as $listArrayEFFET)
-                                        @if ($listArrayEFFET->STATUT == 4)
-                                            <tr>
-                                                <input type="hidden" name="encours_effet" value="notempty">
-                                                <td><input class="form-control" name="cfuEncours[]" value="{{ $listArrayEFFET->ID }}" readonly></td>
-                                                <td><input class="form-control" name="numEffetEncours[]" value="{{ $listArrayEFFET->NUMEFFET }}" readonly></td>
-                                                <td><input class="form-control" name="nomTireEffet[]" value="{{ $listArrayEFFET->NOMTIRE }}" readonly></td>
-                                                <td><input class="form-control" name="ribTireEffet[]" value="{{ $listArrayEFFET->RIBTIRE }}" readonly></td>
-                                                <td><input class="form-control" name="montantEffet[]" value="{{ $listArrayEFFET->MONTANTPRINCIPAL }}" readonly></td>
-                                                <td>
-                                                    <?php
-                                                        $dateConvertimp = strtotime($listArrayEFFET->DATEECHEANCE);
-                                                        $DATEECHEANCE = date("d/m/Y",$dateConvertimp);
-                                                    ?>
-                                                    <input class="form-control" name="dateEcheanceEffet[]" value="{{ $DATEECHEANCE }}" readonly>
-                                                </td>
-                                                <td>
-                                                    <?php
-                                                        $dateConvertimp = strtotime($listArrayEFFET->DATEREMISE);
-                                                        $DATEREMISE = date("d/m/Y",$dateConvertimp);
-                                                    ?>
-                                                    <input class="form-control" name="dateRemiseEffet[]" value="{{ $DATEREMISE }}" readonly>
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-
-                                    <?php
-                                        }else{
-                                    ?>
-
-                                    @if ($listArrayEFFET['STATUT'] == 4)
-                                        <tr>
-                                            <td><input class="form-control" name="cfuEncours" value="{{ $listArrayEFFET['ID'] }}" readonly></td>
-                                            <td><input class="form-control" name="numEffetEncours" value="{{ $listArrayEFFET['NUMEFFET'] }}" readonly></td>
-                                            <td><input class="form-control" name="nomTireEffet" value="{{ $listArrayEFFET['NOMTIRE'] }}" readonly></td>
-                                            <td><input class="form-control" name="ribTireEffet" value="{{ $listArrayEFFET['RIBTIRE'] }}" readonly></td>
-                                            <td><input class="form-control" name="montantEffet" value="{{ $listArrayEFFET['MONTANTPRINCIPAL'] }}" readonly></td>
-                                            <td>
-                                                <?php   $dateConvertimp = strtotime($listArrayEFFET['DATEECHEANCE']);
-                                                    $DATEECHEANCE = date("d/m/Y",$dateConvertimp);
-                                                ?>
-                                                <input class="form-control" name="dateEcheanceEffet" value="{{ $DATEECHEANCE}}" readonly>
-                                            </td>
-                                            <td>
-                                                <?php   $dateConvertimp = strtotime($listArrayEFFET['DATEREMISE']);
-                                                    $DATEREMISE = date("d/m/Y",$dateConvertimp);
-                                                ?>
-                                                <input class="form-control" name="dateRemiseEffet" value="{{ $DATEREMISE}}" readonly>
-                                            </td>
-                                        </tr>
-                                    @endif
-
-                                    <?php
-                                        }
-                                    ?>
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
 
                     <br>
                     <h5 class="card-description text-info">--- {{ __('Couverture') }} ---</h5>
@@ -3653,65 +3409,6 @@ if( isset($listArrayTMBE['LIBELLECREDIT']) ){
                 </div>
             </div>
         </div>
-
-        <div class="tab-pane fade" id="custom-content-above-compte" role="tabpanel" aria-labelledby="custom-content-above-compte-tab">
-            <br>
-            <h5 class="card-description text-info">--- {{ __(' Comptes Client') }} ---</h5>
-            <hr>
-
-            @if ((count($listAutreCompte)>0))
-            <?php
-                if( isset($listAutreCompte[0]) ){
-            ?>
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        <div class="table-responsive">
-
-                            <table class="table">
-                                <thead>
-                                    <th>{{ __('Num Compte') }}</th>
-                                    <th>{{ __('Montant') }}</th>
-                                    <th>{{ __('category') }}</th>
-                                </thead>
-
-                                <tbody>
-                                    @foreach ($listAutreCompte as $key => $listAutreCompte)
-
-                                        <tr>
-                                            <input type="hidden" name="autreCompte" value="notEmpty">
-                                            <td><input class="form-control" name="numCompteACC[]" value="{{ $listAutreCompte->ACCOUNT }}" readonly></td>
-                                            <?php
-                                            if( isset($listAutreCompte->AMOUNT) ){
-                                            ?>
-                                                <td><input class="form-control" name="montantACC[]" value="{{ $listAutreCompte->AMOUNT }}" readonly></td>
-                                            <?php
-                                                }else{
-                                            ?>
-                                                <td><input class="form-control" name="montantACC[]" value="0" readonly></td>
-                                            <?php
-                                                }
-                                            ?>
-                                                <td><input class="form-control" name="categoryACC[]" value="{{ $listAutreCompte->CATEGORY }}" readonly></td>
-                                        </tr>
-
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <?php
-                }
-            ?>
-            @endif
-
-        </div>
-
         </div>
     </div>
     <!-- /.card -->
@@ -3720,3 +3417,7 @@ if( isset($listArrayTMBE['LIBELLECREDIT']) ){
     <!-- /.card -->
 </div>
 @endsection
+
+@push('scripts')
+    @vite('resources/js/compensation/demande-compensation.js')
+@endpush

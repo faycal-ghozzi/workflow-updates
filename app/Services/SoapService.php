@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use SoapClient;
@@ -8,26 +9,58 @@ use Illuminate\Support\Facades\Log;
 class SoapService
 {
     private $soapClient;
+    private $commonParams;
 
     public function __construct()
     {
         $this->soapClient = new SoapClient(env('SOAP_WSDL_URL'));
+        $this->commonParams = [
+            'WebRequestCommon' => [
+                'userName' => env('SOAP_USERNAME'),
+                'password' => env('SOAP_PASSWORD'),
+                'company'  => env('SOAP_COMPANY')
+            ]
+        ];
     }
 
-    public function request($service, $params)
+    public function buildParams($service, $specificParams = [])
+    {
+        $params = $this->commonParams;
+        if($service === 'WSINFORMATIONGLOB'){
+            $params['WSINFORMATIONSGLOBType'] = $specificParams;
+        }else{
+            $params[$service . 'Type'] = $specificParams;
+        }
+        return $params;
+    }
+
+    public function request($service, $params, $extractPath = null)
     {
         try {
-            Log::info('SOAP Request: ', $params);  // Log request params for debugging
             $response = $this->soapClient->$service($params);
-            Log::info('SOAP Response: ', (array)$response);  // Log response for debugging
 
-            $outerArray = (array)$response;
-            $innerArray = (array)$outerArray[$service . 'Type'];
-            $dataArray = (array)$innerArray['g' . $service . 'DetailType'];
+            $responseArray = json_decode(json_encode($response), true);
 
-            return (array)$dataArray['m' . $service . 'DetailType'];
+            if (
+                isset($responseArray['Status']['successIndicator']) &&
+                $responseArray['Status']['successIndicator'] === 'T24Error'
+            ) {
+                Log::error("SOAP Error in {$service}: " . json_encode($responseArray['Status']['messages']));
+                return [];
+            }
+
+            if (!$extractPath) {
+                if($service === 'WSINFORMATIONGLOB'){
+                    $service = 'WSINFORMATIONSGLOB';
+                }
+                $inner = $responseArray[$service . 'Type'] ?? [];
+                $detail = $inner['g' . $service . 'DetailType']['m' . $service . 'DetailType'] ?? [];
+                return $detail;
+            }
+
+            return data_get($responseArray, $extractPath, []);
         } catch (Exception $e) {
-            Log::error('SOAP Error: ' . $e->getMessage());
+            Log::error('SOAP Exception: ' . $e->getMessage());
             return [];
         }
     }
