@@ -5,17 +5,18 @@
 @section('content')
 <div class="container-fluid">
     <div class="card card-default">
+        <form class="forms-sample" action="{{url('/compensation/store/ws')}}" method="POST" enctype="multipart/form-data" id="submit_form">
+        @csrf
+            <input type="hidden" name="client_code" value="{{ $id_client }}">
+            <input type="hidden" name="account_number" value="{{ $account }}">
 
-    <form class="forms-sample" action="{{url('/compensation/store/ws')}}" method="POST" enctype="multipart/form-data" id="submit_form">
-    @csrf
-        <input type="hidden" name="client_code" value="{{ $id_client }}">
-        <input type="hidden" name="account_number" value="{{ $account }}">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title">Noveau Fichier</h4>
+                <button type="submit" class="btn btn-success" id="submit_button">
+                    Enregistrer
+                </button>
+            </div>
 
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="card-title">Noveau Fichier</h4>
-            <button type="submit" class="btn btn-success" id="submit_button">
-                Enregistrer
-            </button>
             <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -50,37 +51,33 @@
                         <a class="nav-link" data-bs-toggle="tab" href="#comptes_client"  data-type="comptes_client">Comptes Client</a>
                     </li>
                 </ul>
-            </div>
 
-            <div class="tab-pane fade" id="informations_generales">
-                @include('compensation.partials.loading')
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade" id="informations_generales">
+                    </div>
+        
+                    <div class="tab-pane fade" id="compensation">
+                    </div>
+        
+                    <div class="tab-pane fade" id="client">
+                    </div>
+        
+                    <div class="tab-pane fade" id="derniere_compensation">
+                    </div>
+        
+                    <div class="tab-pane fade" id="beneficiaire">
+                    </div>
+        
+                    <div class="tab-pane fade" id="commentaires">
+                    </div>
+        
+                    <div class="tab-pane fade" id="comptes_client">
+                    </div>
+                </div>
             </div>
-
-            <div class="tab-pane fade" id="compensation">
-                @include('compensation.partials.loading')
-            </div>
-
-            <div class="tab-pane fade" id="client">
-                @include('compensation.partials.loading')
-            </div>
-
-            <div class="tab-pane fade" id="derniere_compensation">
-                @include('compensation.partials.loading')
-            </div>
-
-            <div class="tab-pane fade" id="beneficiaire">
-                @include('compensation.partials.loading')
-            </div>
-
-            <div class="tab-pane fade" id="commentaires">
-                @include('compensation.partials.loading')
-            </div>
-
-            <div class="tab-pane fade" id="comptes_client">
-                @include('compensation.partials.loading')
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
+</div>
 @endsection
 
 @push('scripts')

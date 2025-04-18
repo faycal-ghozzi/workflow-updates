@@ -1,7 +1,7 @@
 @if(!empty($result))
     <ul>
         @foreach($result as $item)
-            <li>{{ json_encide($item) }}</li>
+            <li>{{ json_encode($item) }}</li>
         @endforeach
     </ul>
 @else

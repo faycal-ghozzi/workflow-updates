@@ -37,7 +37,7 @@ $(document).ready(function() {
             const clientCode = $('[name="client_code"]').val();
             const accountNumber = $('[name="account_number"]').val();
             
-            container.html('<div class="text-center py-4"<div class="spinner-border"></div><p>Chargement...</p></div>');
+            container.html('<div class="text-center py-4"><div class="spinner-border"></div><p>Chargement...</p></div>');
 
             $.ajax({
                 url: `/compensation/wsdata/${type}`,
