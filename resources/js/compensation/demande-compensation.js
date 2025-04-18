@@ -12,7 +12,7 @@ $(document).ready(function() {
         console.error('Error parsing JSON:', e);
         savedData = {}
     }
-    // const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY) || {});
+
     for(const key in savedData){
         const field = document.querySelector(`[name=${key}]`);
         if(field){
