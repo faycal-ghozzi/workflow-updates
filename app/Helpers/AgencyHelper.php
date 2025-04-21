@@ -36,6 +36,6 @@ class AgencyHelper
             24 => 'BTL agence Megrine'
         ];
 
-        return isset($agencies[$agenceId]) ? $agencies[$agenceId] : 'Unknown Agency';
+        return isset($agencies[$agenceId]) ? $agencies[$agenceId] : 'Siège BTL';
     }
 }

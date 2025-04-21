@@ -1,9 +1,9 @@
-@if(!empty($result))
+@if(!empty($derniereCompensation) && is_iterable($derniereCompensation))
     <ul>
-        @foreach($result as $item)
-            <li>{{ json_encode($item) }}</li>
+        @foreach($derniereCompensation as $compensation)
+            <li>{{ json_encode($compensation) }}</li>
         @endforeach
     </ul>
 @else
-    <p class="text-muted">Aucune information trouvée.</p>
+    <p class="text-muted">Aucune compensation trouvé.</p>
 @endif

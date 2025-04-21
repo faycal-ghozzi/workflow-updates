@@ -1,9 +1,9 @@
-@if(!empty($result))
+@if(!empty($infosGlobales) && is_iterable($infosGlobales))
     <ul>
-        @foreach($result as $item)
-            <li>{{ json_encode($item) }}</li>
+        @foreach($infosGlobales as $info)
+            <li>{{ json_encode($info) }}</li>
         @endforeach
     </ul>
 @else
-    <p class="text-muted">Aucune information trouvée.</p>
+    <p class="text-muted">Aucune information trouvé.</p>
 @endif

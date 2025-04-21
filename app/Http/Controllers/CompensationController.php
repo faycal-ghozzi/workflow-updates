@@ -338,7 +338,10 @@ class CompensationController extends Controller
                 return view('compensation.partials.informations_generales', $data);
             
             case 'compensation':
-                $data['placement'] = $fetchSoapData('WSPLACEMENT', [
+
+                // TODO: Verify services and array points of extraction
+
+                $data['placements'] = $fetchSoapData('WSPLACEMENT', [
                             'enquiryInputCollection' => [
                                 ["columnName" => "CUSTOMER.ID", "criteriaValue" => $id_client, "operand" => "EQ"]
                             ]
@@ -356,7 +359,7 @@ class CompensationController extends Controller
                             ]
                         ]) ?? [];
 
-                $data['impaye'] = $fetchSoapData('WSWORKFLOWCHQIMPAYE', [
+                $data['impayes'] = $fetchSoapData('WSWORKFLOWCHQIMPAYE', [
                             'enquiryInputCollection' => [
                                 ["columnName" => "CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
                             ]
@@ -368,7 +371,7 @@ class CompensationController extends Controller
                             ]
                         ]) ?? [];
                 
-                $data['incidentPaiment'] = $fetchSoapData('WSINCIDENTPAIEMENT', [
+                $data['incidentsPaiment'] = $fetchSoapData('WSINCIDENTPAIEMENT', [
                             'enquiryInputCollection' => [
                                 ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
                             ]
@@ -380,7 +383,7 @@ class CompensationController extends Controller
         
             case 'client':
 
-                $data['tombe'] = $fetchSoapData('WSTOMBEECHEANCE', [
+                $data['tombees'] = $fetchSoapData('WSTOMBEECHEANCE', [
                             'enquiryInputCollection' => [
                                 ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
                             ]
@@ -407,12 +410,7 @@ class CompensationController extends Controller
                 return view('compensation.partials.derniere_compensation', $data);
             
             case 'beneficiaire':
-                $data['result'] = $fetchSoapData('WSINFORMATIONGLOB', [
-                    'enquiryInputCollection' => [
-                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
-                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
-                    ]
-                ]) ?? [];
+                // form
                 return view('compensation.partials.beneficiaire', $data);
             
             case 'commentaires':

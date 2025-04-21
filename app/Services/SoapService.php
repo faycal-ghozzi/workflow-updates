@@ -28,6 +28,8 @@ class SoapService
         $params = $this->commonParams;
         if($service === 'WSINFORMATIONGLOB'){
             $params['WSINFORMATIONSGLOBType'] = $specificParams;
+        }elseif($service === 'WSLIMIT'){
+            $params['LIMITEWSType'] = $specificParams;
         }else{
             $params[$service . 'Type'] = $specificParams;
         }
@@ -36,6 +38,7 @@ class SoapService
 
     public function request($service, $params, $extractPath = null)
     {
+        // set_time_limit(0);
         try {
             $response = $this->soapClient->$service($params);
 
@@ -52,6 +55,9 @@ class SoapService
             if (!$extractPath) {
                 if($service === 'WSINFORMATIONGLOB'){
                     $service = 'WSINFORMATIONSGLOB';
+                }
+                if($service === 'WSLIMIT'){
+                    $service = 'LIMITEWS';
                 }
                 $inner = $responseArray[$service . 'Type'] ?? [];
                 $detail = $inner['g' . $service . 'DetailType']['m' . $service . 'DetailType'] ?? [];
