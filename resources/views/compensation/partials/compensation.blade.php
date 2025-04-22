@@ -1,9 +1,3 @@
-{{-- @php
-    var_dump($firstLine);
-    var_dump($secondLine);
-
-@endphp --}}
-
 @php 
     use Illuminate\Support\Str; 
 
@@ -24,7 +18,7 @@
     </div>
 </div>
 
-<br />
+<hr />
 
 <h5>Placements</h5>
 
@@ -147,7 +141,7 @@
     <p class="text-muted">Aucune limite trouvé.</p>
 @endif
 
-<br />
+<hr />
 
 <h5>Facilité de caisse</h5>
 
@@ -182,7 +176,7 @@
     <p class="text-muted">Aucune limite trouvé.</p>
 @endif
 
-<br />
+<hr />
 
 <h5>Encours impayé client</h5>
 
@@ -225,26 +219,123 @@
     <p class="text-muted">Aucun lease trouvé.</p>
 @endif
 
-<h5>Leasing</h5>
+<hr />
+
+<h5>Impayés de Leasing - 3017</h5>
 
 @if(!empty($leasing) && is_iterable($leasing))
-    <ul>
-        @foreach($leasing as $lease)
-            <li>{{ json_encode($lease) }}</li>
-        @endforeach
-    </ul>
+    <div class="table-responsive">
+        <table class="table" id="leasing_client">
+            <thead>
+                <tr>
+                    <th>Numéro d Compte</th>
+                    <th>Solde</th>
+                    <th>Devise</th>
+                    <th>Date d'ouvreture</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($leasing as $lease)
+                    <tr>
+                        <td><input class="form-control" name="refImp" value="{{ $lease['ID'] ?? '' }}" readonly></td>
+                        <td><input class="form-control" name="nature_besoinImp" value="{{ $lease['WORKINGBALANCE'] ?? '' }}" readonly></td>
+                        <td><input class="form-control" name="valeur_besoinImp" value="{{ $lease['CURRENCY'] ?? '' }}" readonly></td>
+                        @php
+                            $rawDate = $lease['OPENINGDATE'] ?? null;
+                            $formattedDate = $rawDate ? \Carbon\Carbon::parse($rawDate)->format('d/m/Y') : '';
+                        @endphp
+                        <td><input class="form-control" name="echeance_besoinImp" value="{{ $formattedDate }}" readonly></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @else
     <p class="text-muted">Aucun lease trouvé.</p>
 @endif
+
+<hr />
 
 <h5>Incidents de Paiment</h5>
 
 @if(!empty($incidentsPaiment) && is_iterable($incidentsPaiment))
-    <ul>
-        @foreach($incidentsPaiment as $incidentPaiment)
-            <li>{{ json_encode($incidentPaiment) }}</li>
-        @endforeach
-    </ul>
+    <div class="form-group">
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <th>REF</th>
+                    <th>NUM CHQ</th>
+                    <th>CODE PRESENTATION</th>
+                    <th>MONTANT</th>
+                    <th>CURRENCY</th>
+                    <th>DATE EMISSION</th>
+                    <th>RIB BENEFICIAIRE</th>
+                    <th>NOM BENEFICIAIRE</th>
+                    <th>MOTIF REJET</th>
+                </thead>
+                <tbody>
+                    @foreach ($incidentsPaiment as $incident)
+                        <tr>
+                            <td><input class="form-control" name="refIncidents" value="{{ $incident['ID'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="numChq" value="{{ $incident['NUMCHQ'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="codePresentation" value="{{ $incident['CODEPRESENTATION'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="montantIncidents" value="{{ $incident['MONTANT'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="deviseIncidents" value="{{ $incident['CURRENCY'] ?? '' }}" readonly></td>
+                            @php
+                                $rawDate = $incident['DATEEMISSION'] ?? null;
+                                $formattedDate = $rawDate ? \Carbon\Carbon::parse($rawDate)->format('d/m/Y') : '';
+                            @endphp
+                            <td><input class="form-control" name="dateEmissionIncidents" value="{{ $formattedDate }}" readonly></td>
+                            <td><input class="form-control" name="ribBeneficiaireIncidents" value="{{ $incident['RIBBENEF'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="nomBeneficiaireIncidents" value="{{ $incident['NOMBENEF'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="motifRejetIncidents" value="{{ $incident['MOTIFREJET'] ?? '' }}" readonly></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 @else
     <p class="text-muted">Aucun lease trouvé.</p>
 @endif
+
+<hr />
+
+<h5>Compensation</h5>
+<div class="form-group">
+    <div class="table-responsive">
+        <table class="table" id="tab_logic">
+            <thead>
+                <tr>
+                    <th><span class="text-danger">*</span> Type de transaction</th>
+                    <th><span class="text-danger">*</span> Bénéficiaire</th>
+                    <th><span class="text-danger">*</span> Montant</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr id="addr0"></tr>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="text-center">
+                        <a id="add_row" class="btn btn-info">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center text-danger font-weight-bold">Total</td>
+                    <td colspan="2">
+                        <input id="Total_TTC" name="val_compensation" type="text"
+                            class="form-control input-md" placeholder="0" readonly>
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

@@ -314,6 +314,9 @@ class CompensationController extends Controller
         $id_client = $request->input('id_client');
         $account = $request->input('account');
 
+        $derniereCompensation = Compensation::where('code_client', $id_client)->orderBy('created_at', 'DESC')->first();
+
+
         $fetchSoapData = function ($service, $specificParams) {
             $params = $this->soapService->buildParams($service, $specificParams);
             return $this->soapService->request($service, $params);
@@ -338,8 +341,6 @@ class CompensationController extends Controller
                 return view('compensation.partials.informations_generales', $data);
             
             case 'compensation':
-
-                // TODO: Verify services and array points of extraction
 
                 $data['placements'] = $fetchSoapData('WSPLACEMENT', [
                             'enquiryInputCollection' => [
@@ -383,6 +384,13 @@ class CompensationController extends Controller
         
             case 'client':
 
+                $data['infosGlobales'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+
                 $data['tombees'] = $fetchSoapData('WSTOMBEECHEANCE', [
                             'enquiryInputCollection' => [
                                 ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
@@ -405,7 +413,8 @@ class CompensationController extends Controller
                 return view('compensation.partials.client', $data);
             
             case 'derniere_compensation':
-                $data['derniereCompensation'] = Compensation::where('code_client', $id_client)->orderBy('created_at', 'DESC')->first();
+
+                $data['derniereCompensation'] = $derniereCompensation;
 
                 return view('compensation.partials.derniere_compensation', $data);
             
