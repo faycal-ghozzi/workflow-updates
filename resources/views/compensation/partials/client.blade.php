@@ -17,7 +17,7 @@
 @endphp
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Situation Client</h5>
     </div>
     <div class="card-body">
@@ -55,37 +55,35 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Arriérés</h5>
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+            <i class="bi bi-info-circle-fill me-2"></i>Arriérés
+        </h5>
+        <button id="add_row_impaye" type="button" class="btn btn-light btn-sm text-primary d-none">
+            <i class="fa fa-plus me-1"></i> Ajouter
+        </button>
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <div class="table-responsive">
-                        <table class="table" id="tab_impaye">
-                            <thead>
-                                <th>Nature</th>
-                                <th>Montant</th>
-                                <th>Devise</th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                <tr id='impaye0'></tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="10"></td>
-                                    <td>
-                                        <a id="add_row_impaye" class="btn btn-info"><i
-                                                class="fa fa-plus"></i></a>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
+        <div id="impaye_empty_state" class="text-center my-4">
+            <button id="add_row_impaye_empty" type="button" class="btn btn-primary bg-gradient">
+                <i class="fa fa-plus me-1"></i> Ajouter un impayé
+            </button>
+        </div>
+
+        <div class="table-responsive d-none" id="impaye_table_container">
+            <table class="table align-middle" id="tab_impaye">
+                <thead>
+                    <tr>
+                        <th>Nature</th>
+                        <th>Montant</th>
+                        <th>Devise</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="impaye_body">
+                    <!-- Rows added dynamically -->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -93,7 +91,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Encours chèque</h5>
     </div>
     <div class="card-body">
@@ -165,7 +163,7 @@
 {{-- <h5>Encours effet à l'encaissement</h5> --}}
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Couverture</h5>
     </div>
     <div class="card-body">
@@ -203,14 +201,14 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Chiffre d'affaire Cofié</h5>
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Chiffre d'affaire Confié</h5>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="form-label fw-bold"><spann class="text-danger">*</span>L'année précédente :</label>
+                    <label class="form-label fw-bold"><span class="text-danger">*</span>L'année précédente :</label>
                     <input type="number" step="any" name="chiffre_ans_preced" id="chiffre_ans_preced" class="form-control"  required/>
                 </div>
             </div>
@@ -227,13 +225,10 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Situation Client</h5>
     </div>
     <div class="card-body">
-
-        {{-- TODO : add a js code to only display this when clicked yes --}}
-
         <div class="row">
             <div class="col-md-12 mt-3">
                 <div class="row">
@@ -250,13 +245,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <label class="form-label fw-bold">Date d'interdiction</label>
-                        <input type="text" name="interdit_chq_client_date" placeholder="jj/mm/AAAA" class="form-control" disabled>
-                    </div>
-                    <div class="col-3">
-                        <label class="form-label fw-bold">Nombre</label>
-                        <input type="number" name="interdit_chq_client_nombre" class="form-control" disabled>
+                    <div class="col-6 conditional-inputs d-none interdit-fields row">
+                        <div class="col-6">
+                            <label class="form-label fw-bold">Date d'interdiction</label>
+                            <input type="text" name="interdit_chq_client_date" placeholder="jj/mm/AAAA" class="form-control" disabled>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold">Nombre</label>
+                            <input type="number" name="interdit_chq_client_nombre" class="form-control" disabled>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -299,9 +296,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- TODO : below everything is related i need a js code to only display this when clicked yes --}}
-
         <div class="row">
             <div class="col-md-12 mt-3">
                 <div class="row">
@@ -318,24 +312,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <label class="form-label fw-bold">Année</label>
-                        <input type="number" name="annee_etat_financier" class="form-control" disabled>
-                    </div>
-                    <div class="col-3">
-                        <label class="form-label fw-bold">Type</label>
-                        <select class="form-control" name="type_etat_financier" disabled>
-                            <option value=""> </option>
-                            <option value="provisoire">Provisoire</option>
-                            <option value="certifié">Certifié</option>
-                            <option value="définitif">Définitif</option>
-                        </select>
+                    <div class="col-6 conditional-inputs finance-fields d-none row">
+                        <div class="col-6">
+                            <label class="form-label fw-bold">Année</label>
+                            <input type="number" name="annee_etat_financier" class="form-control" disabled>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold">Type</label>
+                            <select class="form-control" name="type_etat_financier" disabled>
+                                <option value=""> </option>
+                                <option value="provisoire">Provisoire</option>
+                                <option value="certifié">Certifié</option>
+                                <option value="définitif">Définitif</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-            {{-- TODO : below everything is related i need a js code to only display this when clicked yes --}}
         <div class="row">
             <div class="col-md-12 mt-3">
                 <div class="row">
@@ -352,20 +346,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <label class="form-label fw-bold">Année</label>
-                        <input type="number" name="anneecommissaire" class="form-control" disabled>
-                    </div>
-                    <div class="col-3">
-                        <label class="form-label fw-bold">Réserve</label>
-                        <div class="form-group">
-                            <div class="form-check-inline">
-                                <input class="form-check-input" type="radio" name="liste_finance_rapport_reserve" value="oui">
-                                <label class="form-check-label">Oui</label>
-                            </div>
-                            <div class="form-check-inline">
-                                <input class="form-check-input" type="radio" name="liste_finance_rapport_reserve" value="non">
-                                <label class="form-check-label">Non</label>
+                    <div class="col-6 conditional-inputs rapport-fields d-none row">
+                        <div class="col-6">
+                            <label class="form-label fw-bold">Année</label>
+                            <input type="number" name="anneecommissaire" class="form-control" disabled>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold">Réserve</label>
+                            <div class="form-group">
+                                <div class="form-check-inline">
+                                    <input class="form-check-input" type="radio" name="liste_finance_rapport_reserve" value="oui">
+                                    <label class="form-check-label">Oui</label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <input class="form-check-input" type="radio" name="liste_finance_rapport_reserve" value="non">
+                                    <label class="form-check-label">Non</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -404,7 +400,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Les tombés d'échéance (Dans 2 semaines)</h5>
     </div>
     <div class="card-body">

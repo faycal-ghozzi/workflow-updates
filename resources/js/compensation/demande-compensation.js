@@ -61,7 +61,9 @@ $(document).ready(function() {
         $('#submit_button').attr('disabled', true).text('Veuillez patienter...');
         localStorage.removeItem(STORAGE_KEY);
     });
+
 });
+
 // import $ from 'jquery';
 
 // $('#submit_form').submit(function(){

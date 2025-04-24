@@ -1,8 +1,13 @@
 import $ from 'jquery';
 
-$(document).ready(function () {
-    $('.file-upload').on('change', function () {
-        let fileName = this.files[0]?.name || 'Aucun fichier choisi';
-        $(this).closest('.file-input-wrapper').find('.file-name-display').val(fileName);
-    });
+$(document).on('change', '.file-upload', function () {
+    const fileName = $(this).val().split('\\').pop();
+    const fileInputId = $(this).attr('id');
+    const labelInput = $(`#label_${fileInputId}`);
+
+    if(labelInput.length) {
+        labelInput.val(fileName);
+    }else{
+        console.warn('le matching le zebi', fileInputId);
+    }
 });

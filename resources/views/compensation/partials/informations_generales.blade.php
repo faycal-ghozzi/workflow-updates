@@ -30,7 +30,7 @@
 @endphp
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Informations Globales</h5>
     </div>
     <div class="card-body">
@@ -92,7 +92,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Engagements Gérant</h5>
     </div>
     <div class="card-body">
@@ -138,7 +138,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Engagement du gérant sur le SED</h5>
     </div>
     <div class="card-body">
@@ -146,13 +146,9 @@
             @foreach($fileInputs as $file)
                 <div class="col-md-4">
                     <label for="{{ $file['name'] }}" class="form-label fw-bold mb-2">{{ $file['label'] }}</label>
-                    <x-file-input :name="$file['name']" :disabled="false" />
+                    <x-file-input :name="$file['name']" :disabled="true" />
                 </div>
             @endforeach
         </div>
     </div>
 </div>
-
-@push('scripts')
-    @vite('resources/js/components/fileInput.js')
-@endpush

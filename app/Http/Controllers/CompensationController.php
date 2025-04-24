@@ -419,22 +419,22 @@ class CompensationController extends Controller
                 return view('compensation.partials.derniere_compensation', $data);
             
             case 'beneficiaire':
-                // form
                 return view('compensation.partials.beneficiaire', $data);
             
             case 'commentaires':
-                // empty for now till we figure something out
                 return view('compensation.partials.commentaires');
             
+            // commented since it is non-working for now
+
             case 'comptes_client':
                 // list Autre comptes is infos globales ._.
-                $data['infosGlobales'] = $fetchSoapData('WSINFORMATIONGLOB', [
-                    'enquiryInputCollection' => [
-                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
-                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
-                    ]
-                ]) ?? [];
-                return view('compensation.partials.comptes_client', $data);
+                // $data['infosGlobales'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                //     'enquiryInputCollection' => [
+                //         ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                //         ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                //     ]
+                // ]) ?? [];
+                return view('compensation.partials.comptes_client');
         }
     }
 

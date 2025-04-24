@@ -47,6 +47,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#commentaires"  data-type="commentaires">Commentaires</a>
                     </li>
+                    {{-- Web service ne retourne pas les comptes du client --}}
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#comptes_client"  data-type="comptes_client">Comptes Client</a>
                     </li>
@@ -83,4 +84,6 @@
 @push('scripts')
     @vite('resources/js/compensation/demande-compensation.js')
     @vite('resources/js/components/fileInput.js')
+    @vite('resources/js/compensation/client-section-toggle.js')
+    @vite('resources/js/compensation/table-row-insertion.js')
 @endpush

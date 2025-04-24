@@ -9,19 +9,19 @@
 
 @endphp
 
-<div class="row">
-    <div class="col-md-2">
-        <div class="form-group">
-            <label for="devise_compensation" class="fw-bold">Devise de compensation :</label>
-            <input type="text" class="form-control-plaintext" name="devise_compensation" value="TND" readonly/>
-        </div>
+<div class="card shadow-sm rounded-4 mb-4">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Devise de compensation</h5>
+    </div>
+    <div class="card-body">
+        <input type="text" class="form-control-plaintext" name="devise_compensation" value="TND" readonly/>
     </div>
 </div>
 
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Placements</h5>
     </div>
     <div class="card-body">
@@ -76,7 +76,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Crédits</h5>
     </div>
     <div class="card-body">
@@ -123,7 +123,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Ligne de crédit de gestion</h5>
     </div>
     <div class="card-body">
@@ -165,7 +165,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Facilité de caisse</h5>
     </div>
     <div class="card-body">
@@ -207,7 +207,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Encours impayé client</h5>
     </div>
     <div class="card-body">
@@ -254,7 +254,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Impayés de Leasing - 3017</h5>
     </div>
     <div class="card-body">
@@ -296,7 +296,7 @@
 <hr class="my-4">
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Incidents de Paiment</h5>
     </div>
     <div class="card-body">
@@ -349,46 +349,45 @@
 
 
 <div class="card shadow-sm rounded-4 mb-4">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Compensation</h5>
+    <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+            <i class="bi bi-info-circle-fill me-2"></i>Compensation
+        </h5>
+        <button type="button" class="btn btn-light btn-sm text-primary d-none add-comp-row">
+            <i class="fa fa-plus me-1"></i> Ajouter
+        </button>
     </div>
     <div class="card-body">
-        <div class="form-group">
-            <div class="table-responsive">
-                <table class="table" id="tab_logic">
-                    <thead>
-                        <tr>
-                            <th><span class="text-danger">*</span> Type de transaction</th>
-                            <th><span class="text-danger">*</span> Bénéficiaire</th>
-                            <th><span class="text-danger">*</span> Montant</th>
-                            <th class="text-center"></th>
-                        </tr>
-                    </thead>
+        <div id="comp_empty_state" class="text-center my-4">
+            <button type="button" class="btn btn-primary bg-gradient add-comp-row">
+                <i class="fa fa-plus me-1"></i> Ajouter une compensation
+            </button>
+        </div>
 
-                    <tbody>
-                        <tr id="addr0"></tr>
-                    </tbody>
-
-                    <tfoot>
-                        <tr>
-                            <td colspan="3"></td>
-                            <td class="text-center">
-                                <a id="add_row" class="btn btn-info">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center text-danger font-weight-bold">Total</td>
-                            <td colspan="2">
-                                <input id="Total_TTC" name="val_compensation" type="text"
-                                    class="form-control input-md" placeholder="0" readonly>
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+        <div class="table-responsive d-none" id="comp_table_container">
+            <table class="table align-middle" id="tab_logic">
+                <thead>
+                    <tr>
+                        <th><span class="text-danger">*</span> Type de transaction</th>
+                        <th><span class="text-danger">*</span> Bénéficiaire</th>
+                        <th><span class="text-danger">*</span> Montant</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="comp_body">
+                    <!-- Rows will be added here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center text-danger fw-bold">Total</td>
+                        <td colspan="2">
+                            <input id="Total_TTC" name="val_compensation" type="text"
+                                   class="form-control input-md" placeholder="0" readonly>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>
