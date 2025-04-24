@@ -82,4 +82,5 @@
 
 @push('scripts')
     @vite('resources/js/compensation/demande-compensation.js')
+    @vite('resources/js/components/fileInput.js')
 @endpush

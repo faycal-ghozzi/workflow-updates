@@ -1,5 +1,6 @@
 import './bootstrap';
 import 'jquery';
+import './components/fileInput.js';
 
 import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;  
