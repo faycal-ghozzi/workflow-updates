@@ -6,8 +6,6 @@ $(document).ready(function () {
         $(document).on('change', `input[name="${radioName}"]`, function () {
             const isYes = $(this).val() === 'oui';
 
-            console.log(`Radio "${radioName}" changed to "${isYes ? 'oui' : 'non'}"`);
-
             const $wrapper = $(wrapperSelector);
             const $inputs = $wrapper.find('input, select');
 
