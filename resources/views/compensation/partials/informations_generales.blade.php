@@ -135,9 +135,9 @@
     </div>
 </div>
 
-<hr class="my-4">
+<hr id="hrGerant" class="my-4 d-none">
 
-<div class="card shadow-sm rounded-4 mb-4">
+<div id="cardGerant" class="card shadow-sm rounded-4 mb-4 d-none">
     <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Engagement du gérant sur le SED</h5>
     </div>
