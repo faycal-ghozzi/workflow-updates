@@ -7,8 +7,23 @@ use SoapClient;
 use App\Services\SoapService;
 use App\Helpers\AgencyHelper;
 use App\Models\Agence;
+use App\Models\AutreCompte;
 use App\Models\Compensation\Compensation;
+use App\Models\Compensation\CompensationDetails;
+use App\Models\Compensation\CompensationJustification;
+use App\Models\Compensation\ImpayeClient;
+use App\Models\CreditCompensation;
+use App\Models\DerniereCompensation;
+use App\Models\EncoursCompensation;
+use App\Models\EncoursEffet;
+use App\Models\EngagementGerant;
+use App\Models\ImpayeBesoin;
+use App\Models\ImpayeLeasingCompensation;
+use App\Models\IncidentPaiementComp;
+use App\Models\PlacementCompensation;
+use App\Models\TombeProcheCompensation;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -480,7 +495,7 @@ class CompensationController extends Controller
         $multi = $request['engagement_store'] !== null;
 
         foreach ($codes as $key => $code) {
-            Engagement_gerant::create([
+            EngagementGerant::create([
                 'code_gerant'        => $multi ? $code : $request->code_gerant,
                 'nom_gerant'         => $multi ? $request->nom_gerant[$key] : $request->nom_gerant,
                 'client'             => $multi ? $request->client[$key] : $request->client,
@@ -516,7 +531,7 @@ class CompensationController extends Controller
             'date'      => 'dateCred',
         ], $compensation->id);
 
-        $this->storeMultipleOrSingle($request, 'impaye_compensation', Impaye_besoin::class, [
+        $this->storeMultipleOrSingle($request, 'impaye_compensation', ImpayeBesoin::class, [
             'ref'             => 'refImp',
             'nature_besoin'   => 'nature_besoinImp',
             'valeur_besoin'   => 'valeur_besoinImp',
@@ -588,7 +603,7 @@ class CompensationController extends Controller
         // Compensation Details
         if ($request->type_compensation !== null) {
             foreach ($request->type_compensation as $item) {
-                Compensation_details::create([
+                CompensationDetails::create([
                     'value'             => $item['value'],
                     'beneficiare'       => $item['beneficiare'],
                     'name'              => $item['name'],
@@ -600,7 +615,7 @@ class CompensationController extends Controller
         // Justifications
         if ($request->justification_comp !== null) {
             foreach ($request->justification_comp as $item) {
-                Compensation_justification::create([
+                CompensationJustification::create([
                     'value'                     => $item['value'],
                     'name_justification_update' => $item['name_justification_update'],
                     'id_compensation'           => $compensation->id,
@@ -611,7 +626,7 @@ class CompensationController extends Controller
         // Impayé Client
         if ($request->impaye_client !== null) {
             foreach ($request->impaye_client as $item) {
-                Impaye_client::create([
+                ImpayeClient::create([
                     'nature_impaye'    => $item['nature_impaye'],
                     'montant_impaye'   => $item['montant_impaye'],
                     'devise_impaye'    => $item['devise_impaye'],
@@ -620,7 +635,6 @@ class CompensationController extends Controller
             }
         }
 
-        // Files (no change, same logic)
         $this->handleUpload($request, 'engagement_client', 'upload/engagement', $compensation->id, $compensation->nom_client);
         $this->handleUpload($request, 'risque_client', 'upload/risque', $compensation->id, $compensation->nom_client);
         $this->handleUpload($request, 'garantie', 'upload/garantie', $compensation->id, $compensation->nom_client);
