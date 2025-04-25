@@ -1,0 +1,111 @@
+ 1 of 4
+
+array:82 [▼ // routes\web.php:28
+  "_token" => "IcJwjvrIyc9Hhqt2gqjPjNYiK0ixBMKC7QVXvjw9"
+  "client_code" => "28777"
+  "account_number" => "8900168692"
+  "engagement_store" => "notEmpty"
+  "code_gerant" => array:1 [▼
+    0 => "11535"
+  ]
+  "nom_gerant" => array:1 [▼
+    0 => "BEN AMOR SALAH"
+  ]
+  "client" => array:1 [▼
+    0 => "OUI"
+  ]
+  "classementEng" => array:1 [▼
+    0 => "CREANCES COURANTES - 0"
+  ]
+  "engagement" => null
+  "type_eng_gerant" => null
+  "date_eng_gerant" => null
+  "montant_eng_gerant" => null
+  "devise" => null
+  "encours_tnd" => null
+  "devise_compensation" => "TND"
+  "autorisation_global" => "20000"
+  "utilisation_global" => "-84.728"
+  "disponible_global" => "-64728.418"
+  "date_global_new" => "14 JUN 2025"
+  "valeur_decision" => "20000"
+  "autorisation" => "-29.309"
+  "disponible_autorisation" => "-9309.035"
+  "date_exp_decision_new" => "14 JUN 2025"
+  "refIncidents" => "1467297.26011000002511005151"
+  "numChq" => "1467297"
+  "codePresentation" => "030-REJ"
+  "montantIncidents" => "3792.000"
+  "deviseIncidents" => "TND"
+  "dateEmissionIncidents" => "30/06/2016"
+  "ribBeneficiaireIncidents" => "01304041110500421968"
+  "nomBeneficiaireIncidents" => "METAL SERVICE C"
+  "motifRejetIncidents" => "10"
+  "type_compensation" => array:1 [▼
+    0 => array:3 [▼
+      "name" => "test_comp"
+      "beneficiare" => "test_benef"
+      "value" => "9999"
+    ]
+  ]
+  "val_compensation" => "9999"
+  "working_balance" => "-29309.035"
+  "solde_actuel" => "-24129.477"
+  "solde_comp" => null
+  "solde_post_comp" => null
+  "classement_client" => "CREANCES COURANTES - 0"
+  "impaye_client" => array:1 [▼
+    0 => array:3 [▼
+      "nature_impaye" => "test_impayé"
+      "montant_impaye" => "20"
+      "devise_impaye" => "TND"
+    ]
+  ]
+  "encaissement_effet_etude" => "9991"
+  "encaissement_effet" => "9992"
+  "versement" => "9993"
+  "note_couverture" => "test_note_couv"
+  "chiffre_ans_preced" => "9999"
+  "chiffre_ans_encours" => "9999"
+  "interdit_chq_client" => "oui"
+  "interdit_chq_client_date" => "02/02/2024"
+  "interdit_chq_client_nombre" => "1"
+  "montant_non_paye" => "oui"
+  "depassement" => "oui"
+  "liste_finance_final" => "oui"
+  "annee_etat_financier" => "2024"
+  "type_etat_financier" => "provisoire"
+  "liste_finance_rapport" => "oui"
+  "anneecommissaire" => "2024"
+  "liste_finance_rapport_reserve" => "oui"
+  "nb_transaction" => "9995"
+  "resultat_brut" => "9996"
+  "chiffre_n" => "9997"
+  "resultat_n" => "9998"
+  "date_der_comp_new" => "24-04-2025"
+  "montant_der_comp" => "6500"
+  "decision_der_comp" => "avis favorable par risque"
+  "respect_promet" => "oui"
+  "note_der_comp_update" => "test_promesse"
+  "interdit_chq_ben" => "oui"
+  "situation_banque_ben" => "test_situation"
+  "situation_agent_benf" => "test_situation_gérant"
+  "code_autre_sc" => "010203"
+  "nom_autre_sc" => "test_nom"
+  "activite_autre_sc" => "test_activité"
+  "justification_comp" => array:1 [▼
+    0 => array:2 [▼
+      "name_justification_update" => "test_justif"
+      "value" => "20"
+    ]
+  ]
+  "justification" => "20"
+  "credit_particulier_gerant" => Illuminate\Http\UploadedFile {#234 ▶}
+  "classement_gerant" => Illuminate\Http\UploadedFile {#388 ▶}
+  "cheque_impaye_gerant" => Illuminate\Http\UploadedFile {#1209 ▶}
+  "engagement_client" => Illuminate\Http\UploadedFile {#389 ▶}
+  "risque_client" => Illuminate\Http\UploadedFile {#731 ▶}
+  "garantie" => Illuminate\Http\UploadedFile {#1140 ▶}
+  "engagement_sed_ben" => Illuminate\Http\UploadedFile {#1090 ▶}
+  "classement_ben" => Illuminate\Http\UploadedFile {#1356 ▶}
+]

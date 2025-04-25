@@ -6,7 +6,6 @@
     $filteredEngagements = collect($engagementsCredit ?? [])->filter(function ($engagement) use ($validPrefixes) {
         return isset($engagement['LIMITREFRENCE']) && Str::startsWith($engagement['LIMITREFRENCE'], $validPrefixes);
     });
-
 @endphp
 
 <div class="card shadow-sm rounded-4 mb-4">
@@ -127,18 +126,18 @@
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Ligne de crédit de gestion</h5>
     </div>
     <div class="card-body">
-        @if(!empty($firstLine) && is_iterable($firstLine))
+        @if(!empty($firstLine))
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label fw-bold" for="autorisation_global">Autorisation :</label>
-                        <input type="text" name="autorisation_global" id="autorisation_global" class="form-control-plaintext" value="{{ $firtstLine['PCOMM'] ?? 0 }}" readonly />
+                        <input type="text" class="form-control-plaintext" name="autorisation_global" id="autorisation_global" value="{{ $firstLine['PCOMM'] ?? 0 }}" readonly />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="form-label fw-bold" for="utilisation_global">Utilisation :</label>
-                        <input type="text" name="utilisation_global" id="utilisation_global" class="form-control-plaintext" value="{{ $firstLine['POSAMT'] ?? 0 }}" readonly />
+                        <input type="text" class="form-control-plaintext" name="utilisation_global" id="utilisation_global" value="{{ $firstLine['POSAMT'] ?? 0 }}" readonly />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -169,7 +168,7 @@
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Facilité de caisse</h5>
     </div>
     <div class="card-body">
-        @if(!empty($secondLine) && is_iterable($secondLine))
+        @if(!empty($secondLine))
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">

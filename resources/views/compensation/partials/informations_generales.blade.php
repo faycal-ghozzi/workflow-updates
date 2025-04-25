@@ -113,16 +113,12 @@
                             <td><input class="form-control" name="nom_gerant[]" value="{{ $engagementsGerant['SIGNATORYNAME'] ?? '' }}" readonly></td>
                             <td><input class="form-control" name="client[]" value="{{ $engagementsGerant['CLIENTBANQUE'] ?? '' }}" readonly></td>
                             <td><input class="form-control" name="classementEng[]" value="{{ $classements[$engagementsGerant['CLASSEMENT']] ?? '' }}" readonly></td>
-                            @if (!empty($engagementsGerant['ENGAGEMENT']))
-                                <td><input class="form-control" name="engagement" value="{{ $engagementsGerant['ENGAGEMENT'] }}" readonly></td>
-                                <td><input class="form-control" name="type_eng_gerant" value="{{ $engagementsGerant['LIBELLE'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="date_eng_gerant" value="{{ $engagementsGerant['ECHEDATE'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="montant_eng_gerant" value="{{ $engagementsGerant['ENCOURS'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="devise" value="{{ $engagementsGerant['CURRENCY'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="encours_tnd" value="{{ $engagementsGerant['ENCOURSTND'] ?? '' }}" readonly></td>
-                            @else
-                                <td colspan="6">Aucun engagement trouvé</td>
-                            @endif
+                            <td><input class="form-control" name="engagement" value="{{ $engagementsGerant['ENGAGEMENT'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="type_eng_gerant" value="{{ $engagementsGerant['LIBELLE'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="date_eng_gerant" value="{{ $engagementsGerant['ECHEDATE'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="montant_eng_gerant" value="{{ $engagementsGerant['ENCOURS'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="devise" value="{{ $engagementsGerant['CURRENCY'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="encours_tnd" value="{{ $engagementsGerant['ENCOURSTND'] ?? '' }}" readonly></td>
                         </tr>
                     </tbody>
                 </table>
@@ -135,9 +131,9 @@
     </div>
 </div>
 
-<hr id="hrGerant" class="my-4 d-none">
+<hr id="hrGerant" class="my-4">
 
-<div id="cardGerant" class="card shadow-sm rounded-4 mb-4 d-none">
+<div id="cardGerant" class="card shadow-sm rounded-4 mb-4">
     <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Engagement du gérant sur le SED</h5>
     </div>
@@ -146,7 +142,7 @@
             @foreach($fileInputs as $file)
                 <div class="col-md-4">
                     <label for="{{ $file['name'] }}" class="form-label fw-bold mb-2">{{ $file['label'] }}</label>
-                    <x-file-input :name="$file['name']" :disabled="true" />
+                    <x-file-input :name="$file['name']" :disabled="false" />
                 </div>
             @endforeach
         </div>

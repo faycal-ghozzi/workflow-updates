@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompensationController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,9 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/compensation/wsdata/{type}', [CompensationController::class, 'fetchWsData']);
 
 
-
     Route::post('/compensation/get_client/check/{accountNumber}', [CompensationController::class, 'checkClient'])->name('compensation.check_client');
     Route::post('/compensation/get_client/add_request', [CompensationController::class, 'addRequest'])->name('compensation.add_request');
+    Route::post('/compensation/store/ws', [CompensationController::class, 'store_compensation'])->name('compensation.store_compensation');
 
     Route::get('/compensation/view/{id}', function ($id) {
         return "Testing view route OK! ID: {$id}";

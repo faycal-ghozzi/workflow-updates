@@ -62,17 +62,17 @@ $(document).ready(function() {
         localStorage.removeItem(STORAGE_KEY);
     });
 
-    const table = document.getElementById('tableGerant');
-    const cardGerant = document.getElementById('cardGerant');
-    const hrGerant = document.getElementById('hrGerant');
+    // const table = document.getElementById('tableGerant');
+    // const cardGerant = document.getElementById('cardGerant');
+    // const hrGerant = document.getElementById('hrGerant');
 
-    if (table && cardGerant) {
-        if (table.rows.length !== 1) {
-            hrGerant.classList.remove('d-none').add('d-flex');
-            cardGerant.classList.remove('d-none').add('d-flex');
-        } else {
-            cardGerant.classList.remove('d-flex').add('d-none');
-            hrGerant.classList.remove('d-flex').add('d-none');
-        }
-    }
+    // if (table && cardGerant) {
+    //     if (table.rows.length !== 1) {
+    //         hrGerant.classList.remove('d-none').add('d-flex');
+    //         cardGerant.classList.remove('d-none').add('d-flex');
+    //     } else {
+    //         hrGerant.classList.remove('d-flex').add('d-none');
+    //         cardGerant.classList.remove('d-flex').add('d-none');
+    //     }
+    // }
 });
