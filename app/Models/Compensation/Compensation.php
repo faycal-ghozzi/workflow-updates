@@ -192,4 +192,26 @@ class Compensation extends Model
     // function encous_effet_compensation(){SS
     //     return $this->hasMany(EncoursEffet::class,'id_compensation','id');
     // }
+
+    // Maybe add these
+
+    // public function details() {
+    //     return $this->hasMany(CompensationDetails::class);
+    // }
+    
+    // public function justifications() {
+    //     return $this->hasMany(CompensationJustification::class);
+    // }
+    
+    // public function impayeClients() {
+    //     return $this->hasMany(ImpayeClient::class);
+    // }
+    
+    // public function status() {
+    //     return $this->hasOne(CompensationStatus::class)->latestOfMany();
+    // }
+    
+    // public function files() {
+    //     return $this->hasMany(CompensationFile::class);
+    // }
 }
