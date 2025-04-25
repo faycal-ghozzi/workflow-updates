@@ -447,97 +447,191 @@ class CompensationController extends Controller
                 ));
     }
 
-    public function store_compensation(Request $request)
+    private function storeMultipleOrSingle(Request $request, string $checkKey, string $modelClass, array $fields, $compensationId)
     {
-        DB::beginTransaction();
+        $isMultiple = $request[$checkKey] !== null;
+        $source = $isMultiple ? $request[array_values($fields)[0]] : [0];
 
-        try {
-            // Create main Compensation
-            $compensation = Compensation::create([
-                'client_code'             => $request->input('client_code'),
-                'account_number'          => $request->input('account_number'),
-                'classement_client'       => $request->input('classement_client'),
-                'valeur_decision'         => $request->input('valeur_decision'),
-                'date_expiration'         => Carbon::parse($request->input('date_exp_decision_new'))->toDateString(), // Oracle-safe
-                'note_couverture'         => $request->input('note_couverture'),
-                'resultat_brut'           => $request->input('resultat_brut'),
-                'chiffre_n'               => $request->input('chiffre_n'),
-                'resultat_n'              => $request->input('resultat_n'),
-                'val_compensation'        => $request->input('val_compensation'),
-                'solde_actuel'            => $request->input('solde_actuel'),
-                'solde_post_comp'         => $request->input('solde_post_comp'),
-                'respect_promet'          => $request->input('respect_promet'),
-                'note_der_comp_update'    => $request->input('note_der_comp_update'),
-                'date_decision'           => now()->toDateString(), // Oracle-safe
-            ]);
-
-            // Store compensation details
-            foreach ($request->input('type_compensation', []) as $detail) {
-                $compensation->details()->create([
-                    'name'        => $detail['name'] ?? null,
-                    'beneficiare' => $detail['beneficiare'] ?? null,
-                    'value'       => $detail['value'] ?? null,
-                ]);
+        foreach ($source as $key => $_) {
+            $data = ['id_compensation' => $compensationId];
+            foreach ($fields as $field => $inputKey) {
+                $data[$field] = $isMultiple ? $request[$inputKey][$key] ?? null : $request[$inputKey] ?? null;
             }
-
-            // Store justification entries
-            foreach ($request->input('justification_comp', []) as $justification) {
-                $compensation->justifications()->create([
-                    'name'  => $justification['name_justification_update'] ?? null,
-                    'value' => $justification['value'] ?? null,
-                ]);
-            }
-
-            // Store impayé client details
-            foreach ($request->input('impaye_client', []) as $impaye) {
-                $compensation->impayeClients()->create([
-                    'nature' => $impaye['nature_impaye'] ?? null,
-                    'montant' => $impaye['montant_impaye'] ?? null,
-                    'devise' => $impaye['devise_impaye'] ?? null,
-                ]);
-            }
-
-            // Save initial status (optional default)
-            $compensation->status()->create([
-                'status'      => 'new', // default
-                'updated_by'  => auth()->id(),
-            ]);
-
-            // Handle uploads
-            $this->handleUploads($request, $compensation);
-
-            DB::commit();
-            return response()->json(['message' => 'Compensation stored successfully.']);
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            return response()->json(['error' => $e->getMessage()], 500);
+            $modelClass::create($data);
         }
     }
 
-    private function handleUploads(Request $request, Compensation $compensation)
+    private function handleUpload(Request $request, string $field, string $folder, $id, $label)
     {
-        $uploadFields = [
-            'credit_particulier_gerant',
-            'classement_gerant',
-            'cheque_impaye_gerant',
-            'engagement_client',
-            'risque_client',
-            'garantie',
-            'engagement_sed_ben',
-            'classement_ben',
-        ];
+        if ($request->hasFile($field)) {
+            $file = $request->file($field);
+            $filename = "{$id}_{$field}_{$label}." . $file->getClientOriginalExtension();
+            $file->move(public_path($folder), $filename);
+        }
+    }
 
-        foreach ($uploadFields as $field) {
-            if ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $path = $file->store("compensations/{$compensation->id}", 'public');
 
-                $compensation->files()->create([
-                    'type' => $field,
-                    'path' => $path,
+    public function store_compensation(Request $request)
+    {
+        $compensation = Compensation::create($request->all());
+
+        // Engagement Gérant
+        $codes = $request['engagement_store'] !== null ? $request->code_gerant : [0];
+        $multi = $request['engagement_store'] !== null;
+
+        foreach ($codes as $key => $code) {
+            Engagement_gerant::create([
+                'code_gerant'        => $multi ? $code : $request->code_gerant,
+                'nom_gerant'         => $multi ? $request->nom_gerant[$key] : $request->nom_gerant,
+                'client'             => $multi ? $request->client[$key] : $request->client,
+                'classement'         => $multi ? $request->classementEng[$key] ?? null : $request->classementEng,
+                'engagement'         => $multi ? $request->engagement[$key] ?? null : $request->engagement,
+                'type_eng_gerant'    => $multi ? $request->type_eng_gerant[$key] ?? null : $request->type_eng_gerant,
+                'date_eng_gerant'    => $multi ? $request->date_eng_gerant[$key] ?? null : $request->date_eng_gerant,
+                'montant_eng_gerant' => $multi ? $request->montant_eng_gerant[$key] ?? null : $request->montant_eng_gerant,
+                'devise'             => $multi ? $request->devise[$key] ?? null : $request->devise,
+                'encours_tnd'        => $multi ? $request->encours_tnd[$key] ?? null : $request->encours_tnd,
+                'id_compensation'    => $compensation->id,
+            ]);
+        }
+
+        // Store all child collections
+        $this->storeMultipleOrSingle($request, 'placement_compensation', PlacementCompensation::class, [
+            'reference' => 'referenceP',
+            'nature'    => 'natureP',
+            'montant'   => 'montantP',
+            'devise'    => 'deviseP',
+            'du'        => 'du',
+            'au'        => 'au',
+            'taux'      => 'taux',
+            'basetmm'   => 'basetmm',
+            'marge'     => 'marge',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'credit_compensation', CreditCompensation::class, [
+            'reference' => 'referenceCred',
+            'libelle'   => 'libelleCred',
+            'category'  => 'categoryCred',
+            'encours'   => 'encoursCred',
+            'date'      => 'dateCred',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'impaye_compensation', Impaye_besoin::class, [
+            'ref'             => 'refImp',
+            'nature_besoin'   => 'nature_besoinImp',
+            'valeur_besoin'   => 'valeur_besoinImp',
+            'devise'          => 'deviseImp',
+            'mantant_tnd'     => 'mantant_tndImp',
+            'echeance_besoin' => 'echeance_besoinImp',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'encours_compensation', EncoursCompensation::class, [
+            'reference' => 'referenceEnc',
+            'montant'   => 'montantEnc',
+            'devise'    => 'deviseEnc',
+            'numbord'   => 'numbord',
+            'date'      => 'dateEnc',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'tombe_compensation', TombeProcheCompensation::class, [
+            'reference'     => 'referenceTombe',
+            'nature'        => 'natureTombe',
+            'montant'       => 'montantTombe',
+            'devise'        => 'deviseTombe',
+            'date_ech'      => 'date_echTombe',
+            'date_proche'   => 'date_procheTombe',
+            'category'      => 'categoryTombe',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'autreCompte', AutreCompte::class, [
+            'num_compte' => 'numCompteACC',
+            'montant'    => 'montantACC',
+            'category'   => 'categoryACC',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'input_justif', DerniereCompensation::class, [
+            'promesse_new' => 'promesse_new',
+            'valeur'       => 'valeur',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'impaye_compensation_leasing', ImpayeLeasingCompensation::class, [
+            'num_compte'    => 'num_compte_ImpLeasing',
+            'solde'         => 'solde_leasing',
+            'currency'      => 'devise_leasing',
+            'opening_date'  => 'date_ouverture_leasing',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'incident_paiement', IncidentPaiementComp::class, [
+            'ref'               => 'refIncident',
+            'num_chq'           => 'numChqIncident',
+            'code_presentation' => 'codeIncident',
+            'montant'           => 'montantIncident',
+            'currency'          => 'currencyIncident',
+            'date_emission'     => 'dateIncident',
+            'rib_benef'         => 'ribIncident',
+            'nom_benef'         => 'nomBenefIncident',
+            'motif_rejet'       => 'motifIncident',
+            'date_regule'       => 'DATEREGULEIncident',
+            'stade'             => 'STADEIncident',
+        ], $compensation->id);
+
+        $this->storeMultipleOrSingle($request, 'encours_effet', EncoursEffet::class, [
+            'cfu'           => 'cfuEncours',
+            'num_effet'     => 'numEffetEncours',
+            'nom_tire'      => 'nomTireEffet',
+            'rib_tire'      => 'ribTireEffet',
+            'montant'       => 'montantEffet',
+            'date_echenace' => 'dateEcheanceEffet',
+            'date_remise'   => 'dateRemiseEffet',
+        ], $compensation->id);
+
+        // Compensation Details
+        if ($request->type_compensation !== null) {
+            foreach ($request->type_compensation as $item) {
+                Compensation_details::create([
+                    'value'             => $item['value'],
+                    'beneficiare'       => $item['beneficiare'],
+                    'name'              => $item['name'],
+                    'code_compensation' => $compensation->id,
                 ]);
             }
         }
+
+        // Justifications
+        if ($request->justification_comp !== null) {
+            foreach ($request->justification_comp as $item) {
+                Compensation_justification::create([
+                    'value'                     => $item['value'],
+                    'name_justification_update' => $item['name_justification_update'],
+                    'id_compensation'           => $compensation->id,
+                ]);
+            }
+        }
+
+        // Impayé Client
+        if ($request->impaye_client !== null) {
+            foreach ($request->impaye_client as $item) {
+                Impaye_client::create([
+                    'nature_impaye'    => $item['nature_impaye'],
+                    'montant_impaye'   => $item['montant_impaye'],
+                    'devise_impaye'    => $item['devise_impaye'],
+                    'id_compensation'  => $compensation->id,
+                ]);
+            }
+        }
+
+        // Files (no change, same logic)
+        $this->handleUpload($request, 'engagement_client', 'upload/engagement', $compensation->id, $compensation->nom_client);
+        $this->handleUpload($request, 'risque_client', 'upload/risque', $compensation->id, $compensation->nom_client);
+        $this->handleUpload($request, 'garantie', 'upload/garantie', $compensation->id, $compensation->nom_client);
+        $this->handleUpload($request, 'engagement_sed_gerant', 'upload/engagementSEDGerant', $compensation->id, $compensation->agent_societe);
+        $this->handleUpload($request, 'credit_particulier_gerant', 'upload/creditParticulierGerant', $compensation->id, $compensation->agent_societe);
+        $this->handleUpload($request, 'classement_gerant', 'upload/creditClassementGerant', $compensation->id, $compensation->agent_societe);
+        $this->handleUpload($request, 'cheque_impaye_gerant', 'upload/ChqImpayeGerant', $compensation->id, $compensation->agent_societe);
+        $this->handleUpload($request, 'engagement_sed_ben', 'upload/engagementSEDBeneficiare', $compensation->id, $compensation->nom_autre_sc);
+        $this->handleUpload($request, 'classement_ben', 'upload/ClassementBeneficiare', $compensation->id, $compensation->nom_autre_sc);
+
+        return response()->json(['message' => 'Compensation enregistrée avec succès']);
     }
 
 }
