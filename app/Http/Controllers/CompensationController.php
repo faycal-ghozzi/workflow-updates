@@ -7,21 +7,21 @@ use SoapClient;
 use App\Services\SoapService;
 use App\Helpers\AgencyHelper;
 use App\Models\Agence;
-use App\Models\AutreCompte;
+use App\Models\Compensation\AutreCompte;
 use App\Models\Compensation\Compensation;
 use App\Models\Compensation\CompensationDetails;
 use App\Models\Compensation\CompensationJustification;
 use App\Models\Compensation\ImpayeClient;
-use App\Models\CreditCompensation;
-use App\Models\DerniereCompensation;
-use App\Models\EncoursCompensation;
-use App\Models\EncoursEffet;
-use App\Models\EngagementGerant;
-use App\Models\ImpayeBesoin;
-use App\Models\ImpayeLeasingCompensation;
-use App\Models\IncidentPaiementComp;
-use App\Models\PlacementCompensation;
-use App\Models\TombeProcheCompensation;
+use App\Models\Compensation\CreditCompensation;
+use App\Models\Compensation\DerniereCompensation;
+use App\Models\Compensation\EncoursCompensation;
+use App\Models\Compensation\EncoursEffet;
+use App\Models\Compensation\EngagementGerant;
+use App\Models\Compensation\ImpayeBesoin;
+use App\Models\Compensation\ImpayeLeasingCompensation;
+use App\Models\Compensation\IncidentPaiementComp;
+use App\Models\Compensation\PlacementCompensation;
+use App\Models\Compensation\TombeProcheCompensation;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -485,30 +485,23 @@ class CompensationController extends Controller
         }
     }
 
-
     public function store_compensation(Request $request)
     {
+
         $compensation = Compensation::create($request->all());
 
-        // Engagement Gérant
-        $codes = $request['engagement_store'] !== null ? $request->code_gerant : [0];
-        $multi = $request['engagement_store'] !== null;
-
-        foreach ($codes as $key => $code) {
-            EngagementGerant::create([
-                'code_gerant'        => $multi ? $code : $request->code_gerant,
-                'nom_gerant'         => $multi ? $request->nom_gerant[$key] : $request->nom_gerant,
-                'client'             => $multi ? $request->client[$key] : $request->client,
-                'classement'         => $multi ? $request->classementEng[$key] ?? null : $request->classementEng,
-                'engagement'         => $multi ? $request->engagement[$key] ?? null : $request->engagement,
-                'type_eng_gerant'    => $multi ? $request->type_eng_gerant[$key] ?? null : $request->type_eng_gerant,
-                'date_eng_gerant'    => $multi ? $request->date_eng_gerant[$key] ?? null : $request->date_eng_gerant,
-                'montant_eng_gerant' => $multi ? $request->montant_eng_gerant[$key] ?? null : $request->montant_eng_gerant,
-                'devise'             => $multi ? $request->devise[$key] ?? null : $request->devise,
-                'encours_tnd'        => $multi ? $request->encours_tnd[$key] ?? null : $request->encours_tnd,
-                'id_compensation'    => $compensation->id,
-            ]);
-        }
+        $this->storeMultipleOrSingle($request, 'engagement_store', EngagementGerant::class, [
+            'code_gerant'           => 'code_gerant',
+            'nom_gerant'            => 'nom_gerant',
+            'client'                => 'client',
+            'classement'            => 'classementEng',
+            'engagement'            => 'engagement',
+            'type_eng_gerant'       => 'type_eng_gerant',
+            'date_eng_gerant'       => 'date_eng_gerant',
+            'montant_eng_gerant'    => 'montant_eng_gerant',
+            'devise'                => 'devise',
+            'encours_tnd'           => 'encours_tnd',
+        ], $compensation->id);
 
         // Store all child collections
         $this->storeMultipleOrSingle($request, 'placement_compensation', PlacementCompensation::class, [

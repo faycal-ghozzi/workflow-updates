@@ -96,16 +96,16 @@
                             <tr>
                                 <input type="hidden" name="engagement_credit" value="notEmpty">
 
-                                <td><input class="form-control" name="reference[]" value="{{ $engagement['ENGAGEMENT'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="libelle[]" value="{{ $engagement['LIBELLECREDIT'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="categorie[]" value="{{ $engagement['CATEGORY'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="encours[]" value="{{ $engagement['ENCOURS'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="referenceCred[]" value="{{ $engagement['ENGAGEMENT'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="libelleCred[]" value="{{ $engagement['LIBELLECREDIT'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="categoryCred[]" value="{{ $engagement['CATEGORY'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="encoursCred[]" value="{{ $engagement['ENCOURS'] ?? '' }}" readonly></td>
 
                                 @php
                                     $rawDate = $engagement['ECHEDATE'] ?? '';
                                     $formattedDate = $rawDate ? \Carbon\Carbon::parse($rawDate)->format('d/m/Y') : '';
                                 @endphp
-                                <td><input class="form-control" name="date_echeance[]" value="{{ $formattedDate }}" readonly></td>
+                                <td><input class="form-control" name="dateCred[]" value="{{ $formattedDate }}" readonly></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -226,17 +226,17 @@
                     <tbody>
                         @foreach ($impayes as $impaye)
                             <tr>
-                                <td><input class="form-control" name="refImp" value="{{ $impaye['ID'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="nature_besoinImp" value="{{ $impaye['DESCRIPTION'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="valeur_besoinImp" value="{{ $impaye['TOTALAMTTOREPAY'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="deviseImp" value="{{ $impaye['CURRENCY'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="mantant_tndImp" value="{{ $impaye['TOTALAMTTOREPAYTND'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="refImp[]" value="{{ $impaye['ID'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="nature_besoinImp[]" value="{{ $impaye['DESCRIPTION'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="valeur_besoinImp[]" value="{{ $impaye['TOTALAMTTOREPAY'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="deviseImp[]" value="{{ $impaye['CURRENCY'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="mantant_tndImp[]" value="{{ $impaye['TOTALAMTTOREPAYTND'] ?? '' }}" readonly></td>
                                 
                                 @php
                                     $rawDate = $impaye['PAYMENTDTEDUE'] ?? null;
                                     $formattedDate = $rawDate ? \Carbon\Carbon::parse($rawDate)->format('d/m/Y') : '';
                                 @endphp
-                                <td><input class="form-control" name="echeance_besoinImp" value="{{ $formattedDate }}" readonly></td>
+                                <td><input class="form-control" name="echeance_besoinImp[]" value="{{ $formattedDate }}" readonly></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -271,14 +271,14 @@
                     <tbody>
                         @foreach ($leasing as $lease)
                             <tr>
-                                <td><input class="form-control" name="refImp" value="{{ $lease['ID'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="nature_besoinImp" value="{{ $lease['WORKINGBALANCE'] ?? '' }}" readonly></td>
-                                <td><input class="form-control" name="valeur_besoinImp" value="{{ $lease['CURRENCY'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="num_compte_ImpLeasing[]" value="{{ $lease['ID'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="solde_leasing[]" value="{{ $lease['WORKINGBALANCE'] ?? '' }}" readonly></td>
+                                <td><input class="form-control" name="devise_leasing[]" value="{{ $lease['CURRENCY'] ?? '' }}" readonly></td>
                                 @php
                                     $rawDate = $lease['OPENINGDATE'] ?? null;
                                     $formattedDate = $rawDate ? \Carbon\Carbon::parse($rawDate)->format('d/m/Y') : '';
                                 @endphp
-                                <td><input class="form-control" name="echeance_besoinImp" value="{{ $formattedDate }}" readonly></td>
+                                <td><input class="form-control" name="date_ouverture_leasing[]" value="{{ $formattedDate }}" readonly></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -317,19 +317,19 @@
                         <tbody>
                             @foreach ($incidentsPaiment as $incident)
                                 <tr>
-                                    <td><input class="form-control" name="refIncidents" value="{{ $incident['ID'] ?? '' }}" readonly></td>
-                                    <td><input class="form-control" name="numChq" value="{{ $incident['NUMCHQ'] ?? '' }}" readonly></td>
-                                    <td><input class="form-control" name="codePresentation" value="{{ $incident['CODEPRESENTATION'] ?? '' }}" readonly></td>
-                                    <td><input class="form-control" name="montantIncidents" value="{{ $incident['MONTANT'] ?? '' }}" readonly></td>
-                                    <td><input class="form-control" name="deviseIncidents" value="{{ $incident['CURRENCY'] ?? '' }}" readonly></td>
+                                    <td><input class="form-control" name="refIncident" value="{{ $incident['ID'] ?? '' }}" readonly></td>
+                                    <td><input class="form-control" name="numChqIncident" value="{{ $incident['NUMCHQ'] ?? '' }}" readonly></td>
+                                    <td><input class="form-control" name="codeIncident" value="{{ $incident['CODEPRESENTATION'] ?? '' }}" readonly></td>
+                                    <td><input class="form-control" name="montantIncident" value="{{ $incident['MONTANT'] ?? '' }}" readonly></td>
+                                    <td><input class="form-control" name="currencyIncident" value="{{ $incident['CURRENCY'] ?? '' }}" readonly></td>
                                     @php
                                         $rawDate = $incident['DATEEMISSION'] ?? null;
                                         $formattedDate = $rawDate ? \Carbon\Carbon::parse($rawDate)->format('d/m/Y') : '';
                                     @endphp
-                                    <td><input class="form-control" name="dateEmissionIncidents" value="{{ $formattedDate }}" readonly></td>
-                                    <td><input class="form-control" name="ribBeneficiaireIncidents" value="{{ $incident['RIBBENEF'] ?? '' }}" readonly></td>
-                                    <td><input class="form-control" name="nomBeneficiaireIncidents" value="{{ $incident['NOMBENEF'] ?? '' }}" readonly></td>
-                                    <td><input class="form-control" name="motifRejetIncidents" value="{{ $incident['MOTIFREJET'] ?? '' }}" readonly></td>
+                                    <td><input class="form-control" name="dateIncident" value="{{ $formattedDate }}" readonly></td>
+                                    <td><input class="form-control" name="ribIncident" value="{{ $incident['RIBBENEF'] ?? '' }}" readonly></td>
+                                    <td><input class="form-control" name="nomBenefIncident" value="{{ $incident['NOMBENEF'] ?? '' }}" readonly></td>
+                                    <td><input class="form-control" name="motifIncident" value="{{ $incident['MOTIFREJET'] ?? '' }}" readonly></td>
                                 </tr>
                             @endforeach
                         </tbody>

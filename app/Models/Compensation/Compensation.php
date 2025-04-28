@@ -4,6 +4,17 @@ namespace App\Models\Compensation;
 
 use App\Models\Avis\Avis;
 use App\Models\Agence;
+use App\Models\Compensation\AutreCompte;
+use App\Models\Compensation\CreditCompensation;
+use App\Models\Compensation\DerniereCompensation;
+use App\Models\Compensation\EncoursCompensation;
+use App\Models\Compensation\EncoursEffet;
+use App\Models\Compensation\EngagementGerant;
+use App\Models\Compensation\ImpayeBesoin;
+use App\Models\Compensation\ImpayeLeasingCompensation;
+use App\Models\Compensation\IncidentPaiementComp;
+use App\Models\Compensation\PlacementCompensation;
+use App\Models\Compensation\TombeProcheCompensation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -137,13 +148,13 @@ class Compensation extends Model
         return $this->hasMany(CompensationJustification::class,'id_compensation','id');
     }
 
-    // function engagement_gerant(){
-    //     return $this->hasMany(Engagement_gerant::class,'id_compensation','id');
-    // }
+    function engagement_gerant(){
+        return $this->hasMany(EngagementGerant::class,'id_compensation','id');
+    }
 
-    // function impaye_besoin(){
-    //     return $this->hasMany(Impaye_besoin::class,'id_compensation','id');
-    // }
+    function impaye_besoin(){
+        return $this->hasMany(ImpayeBesoin::class,'id_compensation','id');
+    }
 
     function impaye_client(){
         return $this->hasMany(ImpayeClient::class,'id_compensation','id');
@@ -157,61 +168,39 @@ class Compensation extends Model
         return $this->hasOne(Agence::class,'id','code_agence');
     }
 
-    // function placement_compensation(){
-    //     return $this->hasMany(PlacementCompensation::class,'id_compensation','id');
-    // }
+    function placement_compensation(){
+        return $this->hasMany(PlacementCompensation::class,'id_compensation','id');
+    }
 
-    // function credit_compensation(){
-    //     return $this->hasMany(CreditCompensation::class,'id_compensation','id');
-    // }
+    function credit_compensation(){
+        return $this->hasMany(CreditCompensation::class,'id_compensation','id');
+    }
 
-    // function encours_compensation(){
-    //     return $this->hasMany(EncoursCompensation::class,'id_compensation','id');
-    // }
+    function encours_compensation(){
+        return $this->hasMany(EncoursCompensation::class,'id_compensation','id');
+    }
 
-    // function tombe_compensation(){
-    //     return $this->hasMany(TombeProcheCompensation::class,'id_compensation','id');
-    // }
+    function tombe_compensation(){
+        return $this->hasMany(TombeProcheCompensation::class,'id_compensation','id');
+    }
 
-    // function autre_compte(){
-    //     return $this->hasMany(AutreCompte::class,'id_compensation','id');
-    // }
+    function autre_compte(){
+        return $this->hasMany(AutreCompte::class,'id_compensation','id');
+    }
 
-    // function derniere_compensation_justif(){
-    //     return $this->hasMany(DerniereCompensation::class,'id_compensation','id');
-    // }
+    function derniere_compensation_justif(){
+        return $this->hasMany(DerniereCompensation::class,'id_compensation','id');
+    }
 
-    // function impaye_leasing_compensation(){
-    //     return $this->hasMany(ImpayeLeasingCompensation::class,'id_compensation','id');
-    // }
+    function impaye_leasing_compensation(){
+        return $this->hasMany(ImpayeLeasingCompensation::class,'id_compensation','id');
+    }
 
-    // function incident_paiement_compensation(){
-    //     return $this->hasMany(IncidentPaiementComp::class,'id_compensation','id');
-    // }
+    function incident_paiement_compensation(){
+        return $this->hasMany(IncidentPaiementComp::class,'id_compensation','id');
+    }
 
-    // function encous_effet_compensation(){SS
-    //     return $this->hasMany(EncoursEffet::class,'id_compensation','id');
-    // }
-
-    // Maybe add these
-
-    // public function details() {
-    //     return $this->hasMany(CompensationDetails::class);
-    // }
-    
-    // public function justifications() {
-    //     return $this->hasMany(CompensationJustification::class);
-    // }
-    
-    // public function impayeClients() {
-    //     return $this->hasMany(ImpayeClient::class);
-    // }
-    
-    // public function status() {
-    //     return $this->hasOne(CompensationStatus::class)->latestOfMany();
-    // }
-    
-    // public function files() {
-    //     return $this->hasMany(CompensationFile::class);
-    // }
+    function encous_effet_compensation(){
+        return $this->hasMany(EncoursEffet::class,'id_compensation','id');
+    }
 }

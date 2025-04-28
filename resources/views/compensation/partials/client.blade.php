@@ -26,15 +26,15 @@
             <div class="row">
                 <div class="col-md-3">
                     <label class="form-label fw-bold" for="solde_actuel">Solde actuel :</label>
-                    <input type="text" name="solde_actuel" id="solde_actuel" class="form-control-plaintext" value="{{ $infosGlobales['AMOUNT'] ?? '' }}" readonly>
+                    <input type="text" name="solde_compensation" id="solde_actuel" class="form-control-plaintext" value="{{ $infosGlobales['AMOUNT'] ?? '' }}" readonly>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold" for="solde_comp">Solde de compensation :</label>
-                    <input type="text" name="solde_comp" id="solde_comp" class="form-control-plaintext" readonly>
+                    <input type="text" name="compensation_val" id="compensation_val" class="form-control-plaintext" readonly>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold" for="solde_post_comp">Solde aprés compensation :</label>
-                    <input type="text" name="solde_post_comp" id="solde_post_comp" class="form-control-plaintext" readonly>
+                    <input type="text" name="solde_apres" id="solde_apres" class="form-control-plaintext" readonly>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
@@ -115,22 +115,22 @@
                                         <input type="hidden" name="encours_compensation" value="notEmpty">
 
                                         <td>
-                                            <input class="form-control-plaintext" name="referenceEnc" 
+                                            <input class="form-control-plaintext" name="referenceEnc[]" 
                                                 value="{{ $encours['REFERENCE'] ?? '' }}" readonly>
                                         </td>
 
                                         <td>
-                                            <input class="form-control-plaintext" name="montantEnc" 
+                                            <input class="form-control-plaintext" name="montantEnc[]" 
                                                 value="{{ $encours['AMOUNT'] ?? '' }}" readonly>
                                         </td>
 
                                         <td>
-                                            <input class="form-control-plaintext" name="deviseEnc" 
+                                            <input class="form-control-plaintext" name="deviseEnc[]" 
                                                 value="{{ $encours['CURRENCY'] ?? '' }}" readonly>
                                         </td>
 
                                         <td>
-                                            <input class="form-control-plaintext" name="numbord" 
+                                            <input class="form-control-plaintext" name="numbord[]" 
                                                 value="{{ $encours['NUMBORD'] ?? '' }}" readonly>
                                         </td>
 
@@ -140,7 +140,7 @@
                                                     ? date('d/m/Y', strtotime($encours['DATEENCAISS'])) 
                                                     : '';
                                             @endphp
-                                            <input class="form-control-plaintext" name="dateEnc" value="{{ $dateEnc }}" readonly>
+                                            <input class="form-control-plaintext" name="dateEnc[]" value="{{ $dateEnc }}" readonly>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -423,30 +423,30 @@
                                         @foreach ($tombees as $tombee)
                                             <tr>
                                                 <td>
-                                                    <input class="form-control-plaintext" name="referenceTombe" value="{{ $tombee['ENGAGEMENT'] }}" readonly>
+                                                    <input class="form-control-plaintext" name="referenceTombe[]" value="{{ $tombee['ENGAGEMENT'] }}" readonly>
                                                 </td>
                                             
                                                 <td>
-                                                    <input class="form-control-plaintext" name="natureTombe" value="{{ $tombee['LIBELLECREDIT'] ?? '' }}" readonly>
+                                                    <input class="form-control-plaintext" name="natureTombe[]" value="{{ $tombee['LIBELLECREDIT'] ?? '' }}" readonly>
                                                 </td>
                                             
                                                 <td>
-                                                    <input class="form-control-plaintext" name="montantTombe" value="{{ $tombee['ENCOURS'] }}" readonly>
+                                                    <input class="form-control-plaintext" name="montantTombe[]" value="{{ $tombee['ENCOURS'] }}" readonly>
                                                 </td>
                                             
                                                 <td>
-                                                    <input class="form-control-plaintext" name="deviseTombe" value="{{ $tombee['CURRENCY'] }}" readonly>
+                                                    <input class="form-control-plaintext" name="deviseTombe[]" value="{{ $tombee['CURRENCY'] }}" readonly>
                                                 </td>
                                             
                                                 <td>
-                                                    <input class="form-control-plaintext" name="date_echTombe" value="{{ \Carbon\Carbon::parse($tombee['ECHEDATE'])->format('d/m/Y') }}" readonly>
+                                                    <input class="form-control-plaintext" name="date_echTombe[]" value="{{ \Carbon\Carbon::parse($tombee['ECHEDATE'])->format('d/m/Y') }}" readonly>
                                                 </td>
                                             
                                                 <td>
-                                                    <input class="form-control-plaintext" name="date_procheTombe" value="{{ isset($tombee['DATEPROCH']) ? \Carbon\Carbon::parse($tombee['DATEPROCH'])->format('d/m/Y') : '' }}" readonly>
+                                                    <input class="form-control-plaintext" name="date_procheTombe[]" value="{{ isset($tombee['DATEPROCH']) ? \Carbon\Carbon::parse($tombee['DATEPROCH'])->format('d/m/Y') : '' }}" readonly>
                                                 </td>
                                             
-                                                <input type="hidden" name="categoryTombe" value="{{ $tombee['CATEGORY'] }}">
+                                                <input type="hidden" name="categoryTombe[]" value="{{ $tombee['CATEGORY'] }}">
                                             </tr>
                                         @endforeach                      
                                     </tbody>

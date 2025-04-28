@@ -38,47 +38,49 @@
             <div class="row g-3">
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Agence</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ $agencyHelper->getAgencyName(Auth::user()->agence_id) }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ $agencyHelper->getAgencyName(Auth::user()->agence_id) }}" name="code_agence">
                 </div>
                 <div class="col-md-3">
-                    <input type="hidden" class="form-control-plaintext" readonly value="{{ Auth::user()->name }}">
+                    <input type="hidden" class="form-control-plaintext" readonly value="{{ Auth::user()->name }}" name="user_id">
                 </div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Date</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ now()->format('d/m/Y') }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ now()->format('d/m/Y') }}" name="date_compensation">
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Code Client</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['ID'] }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['ID'] }}" name="code_client">
+                    <input type="hidden" class="form-control-plaintext" readonly value="{{ $infosGlobales['ACCOUNT'] }}" name="account_number"/>
+
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Client</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['SHORTNAME'] }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['SHORTNAME'] }}" name="nom_client">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold">ID Bénéficiaire Effectif</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['IDBENEFICIAIRE'] ?? '-' }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['IDBENEFICIAIRE'] ?? '-' }}" name="id_benef">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Date d'ouverture du compte</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ \Carbon\Carbon::parse($infosGlobales['CONTACTDATE'])->format('d/m/Y') }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ \Carbon\Carbon::parse($infosGlobales['CONTACTDATE'])->format('d/m/Y') }}" name="date_ouverture_new">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Activité</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['LIBINDUSTRY'] }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['LIBINDUSTRY'] }}" name="domaine_societe">
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Secteur</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['DESCRIPTION'] }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['DESCRIPTION'] }}" name="name_secteur">
                 </div>
 
                 
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Bénéficiaire Effectif</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['BENEFICIAIRE'] ?? '-' }}">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ $infosGlobales['BENEFICIAIRE'] ?? '-' }}" name="beneficiare">
                 </div>
             </div>
         @else
@@ -113,12 +115,12 @@
                             <td><input class="form-control" name="nom_gerant[]" value="{{ $engagementsGerant['SIGNATORYNAME'] ?? '' }}" readonly></td>
                             <td><input class="form-control" name="client[]" value="{{ $engagementsGerant['CLIENTBANQUE'] ?? '' }}" readonly></td>
                             <td><input class="form-control" name="classementEng[]" value="{{ $classements[$engagementsGerant['CLASSEMENT']] ?? '' }}" readonly></td>
-                            <td><input class="form-control" name="engagement" value="{{ $engagementsGerant['ENGAGEMENT'] ?? '' }}" readonly></td>
-                            <td><input class="form-control" name="type_eng_gerant" value="{{ $engagementsGerant['LIBELLE'] ?? '' }}" readonly></td>
-                            <td><input class="form-control" name="date_eng_gerant" value="{{ $engagementsGerant['ECHEDATE'] ?? '' }}" readonly></td>
-                            <td><input class="form-control" name="montant_eng_gerant" value="{{ $engagementsGerant['ENCOURS'] ?? '' }}" readonly></td>
-                            <td><input class="form-control" name="devise" value="{{ $engagementsGerant['CURRENCY'] ?? '' }}" readonly></td>
-                            <td><input class="form-control" name="encours_tnd" value="{{ $engagementsGerant['ENCOURSTND'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="engagement[]" value="{{ $engagementsGerant['ENGAGEMENT'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="type_eng_gerant[]" value="{{ $engagementsGerant['LIBELLE'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="date_eng_gerant[]" value="{{ $engagementsGerant['ECHEDATE'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="montant_eng_gerant[]" value="{{ $engagementsGerant['ENCOURS'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="devise[]" value="{{ $engagementsGerant['CURRENCY'] ?? '' }}" readonly></td>
+                            <td><input class="form-control" name="encours_tnd[]" value="{{ $engagementsGerant['ENCOURSTND'] ?? '' }}" readonly></td>
                         </tr>
                     </tbody>
                 </table>
