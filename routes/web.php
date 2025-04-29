@@ -26,10 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/compensation/get_client/add_request', [CompensationController::class, 'addRequest'])->name('compensation.add_request');
     Route::post('/compensation/store/ws', [CompensationController::class, 'store_compensation'])->name('compensation.store_compensation');
 
-    Route::get('/compensation/view/{id}', function ($id) {
-        return "Testing view route OK! ID: {$id}";
-    })->name('compensationview');
-    
+    Route::get('/compensation/display/{id}', [CompensationController::class, 'display'])->name('compensation.display');
+
     Route::get('/compensation/edit/{id}', function ($id) {
         return "Testing edit route OK! ID: {$id}";
     })->name('compensationedit');

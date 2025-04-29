@@ -122,7 +122,7 @@ class CompensationController extends Controller
                 $data = $compensations->getCollection()->transform(function ($compensation) use ($agencyHelper, $user) {
                     $status = \App\Helpers\StatusHelper::getStatusLabel($compensation->status);
 
-                    $viewUrl = route('compensationview', ['id' => $compensation->id]);
+                    $viewUrl = route('compensation.display', ['id' => $compensation->id]);
                     $editUrl = route('compensationedit', ['id' => $compensation->id]);
                     $deleteModalId = "compensation_delete_{$compensation->id}";
                     $viewButton = "<a class='btn btn-info btn-sm' href='{$viewUrl}' title='Voir'><i class='fa fa-eye'></i></a>";
@@ -488,7 +488,14 @@ class CompensationController extends Controller
     public function store_compensation(Request $request)
     {
 
-        $compensation = Compensation::create($request->all());
+        $data = $request->all();
+
+        if (!empty($data['date_compensation'])) {
+            $data['date_compensation'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date_compensation'])->startOfDay();
+        }
+
+        $compensation = Compensation::create($data);
+        
 
         $this->storeMultipleOrSingle($request, 'engagement_store', EngagementGerant::class, [
             'code_gerant'           => 'code_gerant',
@@ -639,6 +646,55 @@ class CompensationController extends Controller
         $this->handleUpload($request, 'classement_ben', 'upload/ClassementBeneficiare', $compensation->id, $compensation->nom_autre_sc);
 
         return response()->json(['message' => 'Compensation enregistrée avec succès']);
+    }
+
+    public function display($id)
+    {
+
+        // Main compensation record
+        $view_comp = Compensation::findOrFail($id);
+
+        // Aggregate sums for Impaye tables
+        $impaye_client = ImpayeClient::where('id_compensation', $id)->sum('montant_impaye');
+        $impaye_client_besoin = ImpayeBesoin::where('id_compensation', $id)->sum('mantant_tnd');
+
+        // Fetch all TombeProcheCompensation rows and group by category
+        $tombe_data = TombeProcheCompensation::where('id_compensation', $id)->get()->groupBy('category');
+
+        $tombe = $tombe_data->get(21050)?->sum('montant') ?? 0;
+        $tombe_view = $tombe_data->get(21050) ?? collect();
+
+        $decouvert = $tombe_data->get(21059)?->sum('montant') ?? 0;
+        $decouvert_view = $tombe_data->get(21059) ?? collect();
+
+        // Fetch all CreditCompensation rows and group by category
+        $credit_data = CreditCompensation::where('id_compensation', $id)->get()->groupBy('category');
+
+        $escompte_credit = $credit_data->get(21050)?->sum('encours') ?? 0;
+        $escompte_credit_view = $credit_data->get(21050) ?? collect();
+
+        $decouvert_credit = $credit_data->get(21059)?->sum('encours') ?? 0;
+        $decouvert_credit_view = $credit_data->get(21059) ?? collect();
+
+        $financement_credit = $credit_data->get(21066)?->sum('encours') ?? 0;
+        $financement_credit_view = $credit_data->get(21066) ?? collect();
+
+        // Return all to the view
+        return view('compensation.display', compact(
+            'view_comp',
+            'impaye_client',
+            'impaye_client_besoin',
+            'tombe',
+            'tombe_view',
+            'decouvert',
+            'decouvert_view',
+            'escompte_credit',
+            'escompte_credit_view',
+            'decouvert_credit',
+            'decouvert_credit_view',
+            'financement_credit',
+            'financement_credit_view'
+        ));
     }
 
 }

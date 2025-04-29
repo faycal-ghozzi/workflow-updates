@@ -98,7 +98,7 @@
                             @foreach($derniereCompensation['justification_comp'] as $justif)
                                 <input type="hidden" name="input_justif" value="notEmpty">
                                 <input type="hidden" name="promesse_new[]" value="{{ $justif['name_justification_update'] }}">
-                                <input type="hidden" name="valeur[]" value="{{ $just["value"] }}">
+                                <input type="hidden" name="valeur[]" value="{{ $justif["value"] }}">
                             @endforeach
                         </div>
                     </div>

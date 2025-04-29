@@ -38,7 +38,8 @@
             <div class="row g-3">
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Agence</label>
-                    <input type="text" class="form-control-plaintext" readonly value="{{ $agencyHelper->getAgencyName(Auth::user()->agence_id) }}" name="code_agence">
+                    <input type="text" class="form-control-plaintext" readonly value="{{ $agencyHelper->getAgencyName(Auth::user()->agence_id) }}">
+                    <input type="hidden" class="form-control-plaintext" readonly value="{{ Auth::user()->agence_id }}" name="code_agence">
                 </div>
                 <div class="col-md-3">
                     <input type="hidden" class="form-control-plaintext" readonly value="{{ Auth::user()->name }}" name="user_id">

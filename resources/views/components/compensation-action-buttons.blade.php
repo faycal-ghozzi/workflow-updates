@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center gap-1"></div>
-    <a class="btn btn-info btn-sm me-1" href="{{ url('/compensation/view/'.$comp->id) }}" title="Voir">
+    <a class="btn btn-info btn-sm me-1" href="{{ url('/compensation/display/'.$comp->id) }}" title="Voir">
         <i class="fa fa-eye"></i>
     </a>
     
