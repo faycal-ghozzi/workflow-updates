@@ -112,7 +112,7 @@
             </div>
         @else
             <div class="alert alert-warning">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i> Aucun compensation trouvée.
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> Aucune compensation trouvée.
             </div>
         @endif
     </div>

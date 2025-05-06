@@ -353,7 +353,7 @@ class CompensationController extends Controller
                                 ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"]
                             ]
                         ]) ?? [];
-                return view('compensation.partials.informations_generales', $data);
+                return view('compensation.insertion_partials.informations_generales', $data);
             
             case 'compensation':
 
@@ -395,7 +395,7 @@ class CompensationController extends Controller
                 $data['firstLine'] = $listArrayLimit[0] ?? [];
                 $data['secondLine'] = $listArrayLimit[1] ?? [];
 
-                return view('compensation.partials.compensation', $data);
+                return view('compensation.insertion_partials.compensation', $data);
         
             case 'client':
 
@@ -425,19 +425,19 @@ class CompensationController extends Controller
                 //         ["columnName" => "COMPTE.CEDANT", "criteriaValue" => $account, "operand" => "EQ"]
                 //     ]
                 // ]) ?? [];
-                return view('compensation.partials.client', $data);
+                return view('compensation.insertion_partials.client', $data);
             
             case 'derniere_compensation':
 
                 $data['derniereCompensation'] = $derniereCompensation;
 
-                return view('compensation.partials.derniere_compensation', $data);
+                return view('compensation.insertion_partials.derniere_compensation', $data);
             
             case 'beneficiaire':
-                return view('compensation.partials.beneficiaire', $data);
+                return view('compensation.insertion_partials.beneficiaire', $data);
             
             case 'commentaires':
-                return view('compensation.partials.commentaires');
+                return view('compensation.insertion_partials.commentaires');
             
             // commented since it is non-working for now
 
@@ -449,7 +449,7 @@ class CompensationController extends Controller
                 //         ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
                 //     ]
                 // ]) ?? [];
-                return view('compensation.partials.comptes_client');
+                return view('compensation.insertion_partials.comptes_client');
         }
     }
 
