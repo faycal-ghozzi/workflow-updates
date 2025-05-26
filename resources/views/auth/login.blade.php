@@ -1,28 +1,41 @@
 <x-guest-layout>
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
 
-    <form method="POST" action="{{ route('login') }}" class="space-y-6">
+    <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Username -->
-        <div>
-            <x-input-label for="username" :value="__('Username')" />
-            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('username')" class="mt-2" />
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input id="username" type="text"
+                   class="form-control @error('username') is-invalid @enderror"
+                   name="username" value="{{ old('username') }}" required autofocus>
+            @error('username')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
 
         <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" type="password"
+                   class="form-control @error('password') is-invalid @enderror"
+                   name="password" required>
+            @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
 
-        <div>
-            <x-primary-button class="w-full justify-center">
-                {{ __('Log in') }}
-            </x-primary-button>
+        <!-- Submit -->
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary">
+                Log in
+            </button>
         </div>
     </form>
 </x-guest-layout>
