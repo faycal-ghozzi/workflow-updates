@@ -1,7 +1,7 @@
 <div class="bg-light border-end vh-100 p-3" id="sidebar-wrapper">
   <h6 class="text-muted">Navigation</h6>
   <div class="list-group list-group-flush">
-    <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
+    <a href="{{ route('dashboard')}}" class="list-group-item list-group-item-action">Dashboard</a>
     
     <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#compensationMenu" role="button" aria-expanded="false" aria-controls="compensationMenu">
       Compensation
