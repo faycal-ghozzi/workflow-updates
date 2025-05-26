@@ -36,5 +36,9 @@
             @include('compensation.display_partials.chiffre_affaires', ['ca_n_1' => $view_comp->chiffre_ans_preced, 'ca_n' => $view_comp->chiffre_ans_encours])
             <hr>
             @include('compensation.display_partials.situation_client', ['view_comp' => $view_comp])
+            <hr>
+            @include('compensation.display_partials.tombee_proche', ['view_comp' => $view_comp])
+            <hr>
+            @include('compensation.display_partials.tombee_proche_2w', ['tombe' => $tombe, 'decouvert' => $decouvert, 'tombe_compensation' => $view_comp->tombe_compensation])
         </div>
 @endsection
