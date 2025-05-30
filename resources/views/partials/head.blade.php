@@ -4,3 +4,6 @@
 <title>@yield('title', 'My App')</title>
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+@vite('resources/js/users.js')
+
+@stack('styles')

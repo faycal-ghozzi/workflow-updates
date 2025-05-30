@@ -8,6 +8,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    optimizeDeps: {
+        include: ['jquery', 'select2'],
+    },
     build: {
         outDir: 'public/build',
     }

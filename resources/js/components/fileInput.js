@@ -8,6 +8,6 @@ $(document).on('change', '.file-upload', function () {
     if(labelInput.length) {
         labelInput.val(fileName);
     }else{
-        console.warn('le matching le zebi', fileInputId);
+        console.warn('no match', fileInputId);
     }
 });

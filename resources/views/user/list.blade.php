@@ -24,7 +24,7 @@
                         </td>
                         <td>{{ $agencyHelper->getAgencyName(Auth::user()->agence_id) }}</td>
                         <td>
-                            <a href="" class="btn btn-sm btn-info">Show</a>
+                            <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-sm btn-info">Show</a>
                         </td>
                     </tr>
                 @endforeach

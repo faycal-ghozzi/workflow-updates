@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::middleware('permission:users')->group(function(){
         Route::controller(UserController::class)->group(function() {
             Route::get('/users', 'list')->name('users.list');
+            Route::get('/users/{id}', 'show')->name('users.show');
         });
     });
     // Route::get('/compensation', [CompensationController::class, 'list'])->name('compensation.list');
