@@ -5,6 +5,19 @@
 @section('content')
 
 <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            @foreach ($modalConfigs as $key => $config)
+                @include('components.avis-button', [
+                    'role' => $config['role'],
+                    'showIf' => $config['showIf'],
+                    'key' => $key,
+                    'compensation' => $view_comp
+                ])
+            @endforeach
+        </div>
+    </div>
+
     <div class="card card-default">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title">Consultation Compensation</h4>
