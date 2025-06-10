@@ -19,12 +19,10 @@
             <tbody>
                 @foreach($users as $user)
                     <tr>
+                        <td>{{ $user->name . ' ' . $user->last_name }}</td>
+                        <td>{{ $agencyHelper->getAgencyName($user->agence_id) }}</td>
                         <td>
-                            {{ $user->name . ' ' . $user->last_name }}
-                        </td>
-                        <td>{{ $agencyHelper->getAgencyName(Auth::user()->agence_id) }}</td>
-                        <td>
-                            <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-sm btn-info">Show</a>
+                            <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-primary">Modifier</a>
                         </td>
                     </tr>
                 @endforeach
@@ -34,3 +32,7 @@
 </div>
 
 @endsection
+
+@push('scripts')
+    @vite(['resources/js/users.js'])
+@endpush

@@ -13,14 +13,18 @@ $('#historique-compensation').DataTable({
     ajax: {
         url: '/compensation/historique',
         type: 'GET',
+        error: function(xhr, error, thrown) {
+            console.error('DataTables AJAX error:', xhr.status, xhr.responseText);
+            alert('Erreur AJAX : ' + xhr.status + ' - ' + xhr.statusText);
+        }
     },
     columns: [
-        { data: 'code_client', name: 'code_client' },
-        { data: 'nom_client', name: 'nom_client' },
-        { data: 'date_compensation', name: 'date_compensation' },
-        { data: 'agency_name', name: 'agency_name' },
-        { data: 'status', name: 'status', orderable: false, searchable: false },
-        { data: 'actions', name: 'actions', orderable: false, searchable: false }
+        { data: 'code_client' },
+        { data: 'nom_client' },
+        { data: 'date_compensation' },
+        { data: 'agency_name' },
+        { data: 'status', orderable: false, searchable: false },
+        { data: 'actions', orderable: false, searchable: false }
     ],
     language: datatableLanguage
 });

@@ -18,12 +18,21 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::middleware('permission:compensation')->group(function(){
         Route::controller(CompensationController::class)->group(function () {
+
+            Route::post('/compensation/get_client/check/{accountNumber}', [CompensationController::class, 'checkClient'])->name('compensation.check_client');
+            Route::post('/compensation/get_client/add_request', [CompensationController::class, 'addRequest'])->name('compensation.add_request');
+            Route::post('/compensation/store/ws', [CompensationController::class, 'store_compensation'])->name('compensation.store_compensation');  
+
             Route::get('/compensation', 'list')->name('compensation.list');
             Route::get('/compensation/historique', 'historique')->name('compensation.historique');
             Route::get('/compensation/etat_journalier', 'etatJournalier')->name('compensation.etat_journalier');
             Route::get('/compensation/extrait', 'extrait')->name('compensation.extrait');
             Route::get('/compensation/get_client', 'getClient')->name('compensation.get_client');
             Route::get('/compensation/wsdata/{type}', 'fetchWsData');
+            Route::get('/compensation/display/{id}', 'display')->name('compensation.display');
+            Route::get('/compensation/edit/{id}', function ($id) {
+                return "Testing edit route OK! ID: {$id}";
+            })->name('compensation.edit');
         });
     });
 
@@ -31,6 +40,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::controller(UserController::class)->group(function() {
             Route::get('/users', 'list')->name('users.list');
             Route::get('/users/{id}', 'show')->name('users.show');
+            Route::post('user/{id}/update', [UserController::class, 'updateUserInfos']);
         });
     });
     // Route::get('/compensation', [CompensationController::class, 'list'])->name('compensation.list');

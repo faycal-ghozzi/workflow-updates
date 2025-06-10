@@ -3,6 +3,7 @@
 @section('title', 'Consultation Compensation')
 
 @section('content')
+
 <div class="container-fluid">
     <div class="card card-default">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -41,4 +42,70 @@
             <hr>
             @include('compensation.display_partials.tombee_proche_2w', ['tombe' => $tombe, 'decouvert' => $decouvert, 'tombe_compensation' => $view_comp->tombe_compensation])
         </div>
+
+        @php
+        $modalConfigs = [
+            'charge' => [
+                'role' => 'Charge',
+                'label' => "chargé de clientèle",
+                'action' => '/viewCompensation/avis_avec_decision_charge',
+                'submitName' => 'decision',
+                'showIf' => in_array($view_comp->status, [1]),
+            ],
+            'chef' => [
+                'role' => 'Chef_agence',
+                'label' => "chef d'agence",
+                'action' => '/viewCompensation/avis_avec_decision_chef',
+                'submitName' => 'decision',
+                'showIf' => in_array($view_comp->status, [4, 5]),
+            ],
+            'exp_corporate' => [
+                'role' => 'Exploitation_corporate',
+                'label' => "Exploitation Corporate",
+                'action' => '/viewCompensation/avis_avec_decision_exp_corporate',
+                'submitName' => 'decision',
+                'showIf' => in_array($view_comp->status, [6, 7]),
+            ],
+            'exp_particulier' => [
+                'role' => 'Exploitation_particulier',
+                'label' => "Exploitation Particulier",
+                'action' => '/viewCompensation/avis_avec_decision_exp_particulier',
+                'submitName' => 'decision',
+                'showIf' => in_array($view_comp->status, [6, 7]),
+            ],
+            'exp' => [
+                'role' => 'Exploitation_décideur',
+                'label' => "Exploitation",
+                'action' => '/viewCompensation/avis_avec_decision_exp',
+                'submitName' => 'decision',
+                'showIf' => in_array($view_comp->status, [8, 9, 10, 11, 20, 21]),
+            ],
+            'risque' => [
+                'role' => 'Risque',
+                'label' => "Risque",
+                'action' => '/viewCompensation/avis_avec_decision_risque',
+                'submitName' => 'decision',
+                'showIf' => in_array($view_comp->status, [13, 22]),
+            ],
+            'dg' => [
+                'role' => 'PDG', // or 'DGA'
+                'label' => "Direction Générale",
+                'action' => '/viewCompensation/avis_avec_decision_dg',
+                'submitName' => 'decision',
+                'showIf' => in_array($view_comp->status, [15, 24, 25]),
+            ],
+        ];
+        @endphp
+        
+        @foreach ($modalConfigs as $key => $config)
+            @if (Auth::user()->hasRole($config['role']) && $config['showIf'])
+                @include('compensation.modals.decision', [
+                    'role' => $key,
+                    'label' => $config['label'],
+                    'action' => $config['action'],
+                    'submitName' => $config['submitName'],
+                    'compensation' => $view_comp
+                ])
+            @endif
+        @endforeach
 @endsection

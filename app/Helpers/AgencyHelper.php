@@ -31,6 +31,7 @@ class AgencyHelper
             18 => 'BTL agence Ariana',
             19 => 'BTL agence Lac 2',
             20 => 'BTL agence Aouina',
+            21 => 'BTL agence Ras Jdir',
             22 => 'BTL agence Marsa',
             23 => 'BTL agence Djerba',
             24 => 'BTL agence Megrine'

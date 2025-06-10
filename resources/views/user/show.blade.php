@@ -3,7 +3,7 @@
 @section('title', 'Informations Utilisateur')
 
 @push('styles')
-  @vite('resources/css/searchabledropdown.css')   
+  @vite('resources/css/users.css')   
 @endpush
 
 @section('content')
@@ -11,9 +11,15 @@
 <div class="container-fluid">
     <div class="card mt-4">
       <div class="card-body">
-        <form action="{{url('user/'.$user->id.'/agence')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{ url('user/'.$user->id.'/update') }}" method="POST" enctype="multipart/form-data">
           @csrf
-          <h3 class="text-center mb-4">Informations Personelles</h3>
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="{{ url('/users') }}" class="btn btn-outline-secondary">
+                ← Retour
+            </a>
+            <h3 class="m-0 text-center flex-grow-1">Informations Personelles</h3>
+            <div style="width: 90px;"></div> 
+        </div>
           <div class="form-section">
             <div class="form-row">
                 <div class="row g-4">
@@ -55,60 +61,68 @@
             </div>
           </div>
             
-            
-            <div class="form-row">
-              
-          </div>
-
+          <hr>
+          <h3 class="text-center mb-4">Rôles & Permissions</h3>
           <div class="form-section">
-            <h5>Dates</h5>
-            <div class="form-row">
-              <div class="form-group col-md-4">
-                <label>Créé le</label>
-                <input type="text" class="form-control" value="{{$user->created_at}}" readonly>
+            <h5 class="text-center mb-4">Rôles</h5>
+            <div class="form-group">
+              <div class="custom-multiselect" id="role-selector">
+                <div class="available-items">
+                  @foreach($roles as $role)
+                    @if(!$user->hasRole($role->name))
+                      <span class="custom-pill" data-value="{{ $role->name }}">{{ $role->name }}</span>
+                    @endif
+                  @endforeach
+                </div>
+                <hr>
+                <div class="selected-items mt-2">
+                  @foreach($user->roles as $role)
+                    <span class="custom-pill selected" data-value="{{ $role->name }}">
+                      {{ $role->name }} <span class="remove">&times;</span>
+                      <input type="hidden" name="roles[]" value="{{ $role->name }}">
+                    </span>
+                  @endforeach
+                </div>
               </div>
-              <div class="form-group col-md-4">
-                <label>Mis à jour le</label>
-                <input type="text" class="form-control" value="{{$user->updated_at}}" readonly>
+            </div>
+            <br>
+            <h5 class="text-center mb-4">Permissions</h5>
+            <div class="form-group">
+              <div class="custom-multiselect readonly">
+                <div class="selected-items">
+                  @foreach($user->getPermissionsViaRoles() as $perm)
+                    <span class="custom-pill readonly">{{ $perm->name }}</span>
+                  @endforeach
+                </div>
               </div>
-              <div class="form-group col-md-4">
-                <label>Dernière connexion</label>
-                <input type="text" class="form-control" value="{{$user->last_seen}}" readonly>
+            </div>
+            <br>
+            <h5 class="text-center mb-4">Permissions directes</h5>
+            <div class="form-group">
+              <div class="custom-multiselect" id="permission-selector">
+                <div class="available-items">
+                  @foreach($permissions as $perm)
+                    @if(!$user->hasAnyDirectPermission($perm->name))
+                      <span class="custom-pill" data-value="{{ $perm->name }}">{{ $perm->name }}</span>
+                    @endif
+                  @endforeach
+                </div>
+                <div class="selected-items mt-2">
+                  @foreach($user->getDirectPermissions() as $perm)
+                    <span class="custom-pill selected" data-value="{{ $perm->name }}">
+                      {{ $perm->name }} <span class="remove">&times;</span>
+                      <input type="hidden" name="permissions[]" value="{{ $perm->name }}">
+                    </span>
+                  @endforeach
+                </div>
               </div>
             </div>
           </div>
-
-          <div class="form-section">
-            <h5>Rôles & Permissions</h5>
-            <div class="form-group">
-              <label>Rôles</label>
-              <select class="form-control select2" multiple name="roles[]">
-                @foreach($roles as $role)
-                  <option value="{{$role->name}}" @if($user->hasRole($role->name)) selected @endif>{{$role->name}}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Permissions via rôles</label>
-              <select class="form-control select2" multiple disabled>
-                @foreach($user->getPermissionsViaRoles() as $perm)
-                  <option selected>{{$perm->name}}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Permissions directes</label>
-              <select class="form-control select2" multiple name="permissions[]">
-                @foreach($permissions as $permission)
-                  <option value="{{$permission->name}}" @if($user->hasAnyDirectPermission($permission->name)) selected @endif>{{$permission->name}}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
+          <br><br>
           <div class="text-center">
             <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
           </div>
+          <br><br>
         </form>
 
       </div>

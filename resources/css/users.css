@@ -1,0 +1,73 @@
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.custom-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.custom-option {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.custom-option:hover {
+    background-color: #f1f1f1;
+}
+
+.custom-multiselect {
+    display: flex;
+    flex-direction: column;
+}
+
+.available-items, .selected-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.custom-pill {
+    background-color: #f1f1f1;
+    padding: 6px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.custom-pill:hover {
+    background-color: #e2e6ea;
+}
+
+.custom-pill.selected {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.custom-pill.selected .remove {
+    margin-left: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+  
+.custom-pill.readonly {
+    background-color: #dee2e6;
+    cursor: default;
+    color: #6c757d;
+}
+  
+.custom-pill.readonly:hover {
+    background-color: #dee2e6;
+}
+  

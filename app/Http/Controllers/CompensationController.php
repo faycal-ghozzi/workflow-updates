@@ -123,7 +123,7 @@ class CompensationController extends Controller
                     $status = \App\Helpers\StatusHelper::getStatusLabel($compensation->status);
 
                     $viewUrl = route('compensation.display', ['id' => $compensation->id]);
-                    $editUrl = route('compensationedit', ['id' => $compensation->id]);
+                    $editUrl = route('compensation.edit', ['id' => $compensation->id]);
                     $deleteModalId = "compensation_delete_{$compensation->id}";
                     $viewButton = "<a class='btn btn-info btn-sm' href='{$viewUrl}' title='Voir'><i class='fa fa-eye'></i></a>";
                     $editButton = "<a class='btn btn-warning btn-sm' href='{$editUrl}' title='Modifier'><i class='fa fa-pen'></i></a>";
