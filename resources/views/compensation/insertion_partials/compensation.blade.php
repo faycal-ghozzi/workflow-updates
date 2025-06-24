@@ -26,8 +26,8 @@
     <div class="card-body">
         @if(!empty($placements) && is_iterable($placements))
             <div class="table-responsive">
-                <table class="table" id="placement_table">
-                    <thead>
+                <table class="table table-bordered table-striped table-sm" id="placement_table">
+                    <thead class="table-dark">
                         <tr>
                             <th>Référence</th>
                             <th>Nature du placement</th>
@@ -81,8 +81,8 @@
     <div class="card-body">
         @if($filteredEngagements->isNotEmpty())
             <div class="table-responsive">
-                <table class="table" id="credit_client">
-                    <thead>
+                <table class="table table-bordered table-striped table-sm" id="credit_client">
+                    <thead class="table-dark">
                         <tr>
                             <th>Référence</th>
                             <th>Libellé</th>
@@ -212,8 +212,8 @@
     <div class="card-body">
         @if(!empty($impayes) && is_iterable($impayes))
             <div class="table-responsive">
-                <table class="table" id="impayes_client">
-                    <thead>
+                <table class="table table-bordered table-striped table-sm" id="impayes_client">
+                    <thead class="table-dark">
                         <tr>
                             <th>Référence</th>
                             <th>Type d'impayé</th>
@@ -259,8 +259,8 @@
     <div class="card-body">
         @if(!empty($leasing) && is_iterable($leasing))
             <div class="table-responsive">
-                <table class="table" id="leasing_client">
-                    <thead>
+                <table class="table table-bordered table-striped table-sm" id="leasing_client">
+                    <thead class="table-dark">
                         <tr>
                             <th>Numéro d Compte</th>
                             <th>Solde</th>
@@ -302,8 +302,8 @@
         @if(!empty($incidentsPaiment) && is_iterable($incidentsPaiment))
             <div class="form-group">
                 <div class="table-responsive">
-                    <table class="table ">
-                        <thead>
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead class="table-dark">
                             <th>REF</th>
                             <th>NUM CHQ</th>
                             <th>CODE PRESENTATION</th>
@@ -364,8 +364,8 @@
         </div>
 
         <div class="table-responsive d-none" id="comp_table_container">
-            <table class="table align-middle" id="tab_logic">
-                <thead>
+            <table class="table table-bordered table-striped table-sm align-middle" id="tab_logic">
+                <thead class="table-dark">
                     <tr>
                         <th><span class="text-danger">*</span> Type de transaction</th>
                         <th><span class="text-danger">*</span> Bénéficiaire</th>

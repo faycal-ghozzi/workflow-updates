@@ -8,7 +8,7 @@
     </a>
     
     @if (Auth::user()->hasRole('Chef_agence') || Auth::user()->hasRole('admin'))
-        <button class="btn btn-danger btn-sm me-1" data-toggle="modal" data-target="#compensation_delete_{{$comp->id}}" title="Supprimer">
+        <button class="btn btn-danger btn-sm me-1" data-bs-toggle="modal" data-bs-target="#compensation_delete_{{$comp->id}}" title="Supprimer">
             <i class="fa fa-trash"></i>
         </button>
     @endif

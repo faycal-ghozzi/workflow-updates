@@ -3,7 +3,7 @@
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Crédits</h5>
     </div>
     <div class="card-body">
-        @if(!empty($credits))
+        @if(!empty($credits[0]->reference))
             <div class="form-group">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-sm">
@@ -17,13 +17,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($credits as $cr)
+                            @foreach($credits as $item)
                                 <tr>
-                                    <td>{{ $cr->reference ?? '--' }}</td>
-                                    <td>{{ $cr->libelle ?? '--' }}</td>
-                                    <td>{{ $cr->category ?? '--' }}</td>
-                                    <td>{{ $cr->encours ?? '--' }}</td>
-                                    <td>{{ $cr->date ?? '--' }}</td>
+                                    <td>{{ $item->reference ?? '--' }}</td>
+                                    <td>{{ $item->libelle ?? '--' }}</td>
+                                    <td>{{ $item->category ?? '--' }}</td>
+                                    <td>{{ $item->encours ?? '--' }}</td>
+                                    <td>{{ $item->date ?? '--' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

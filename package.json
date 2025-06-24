@@ -27,6 +27,7 @@
         "datatables.net": "^2.2.2",
         "datatables.net-bs5": "^2.2.2",
         "jquery": "^3.7.1",
-        "select2": "^4.1.0-rc.0"
+        "select2": "^4.1.0-rc.0",
+        "sweetalert2": "^11.22.0"
     }
 }

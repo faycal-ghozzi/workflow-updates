@@ -130,7 +130,7 @@ class CompensationController extends Controller
                     $deleteButton = '';
 
                     if ($user->hasRole('Chef_agence') || $user->hasRole('admin')) {
-                        $deleteButton = "<button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#{$deleteModalId}' title='Supprimer'>
+                        $deleteButton = "<button class='btn btn-danger btn-sm' data-bs-toggle='modal' data-bs-target='#{$deleteModalId}' title='Supprimer'>
                                             <i class='fa fa-trash'></i>
                                         </button>";
                     }
@@ -443,13 +443,13 @@ class CompensationController extends Controller
 
             case 'comptes_client':
                 // list Autre comptes is infos globales ._.
-                // $data['infosGlobales'] = $fetchSoapData('WSINFORMATIONGLOB', [
-                //     'enquiryInputCollection' => [
-                //         ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
-                //         ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
-                //     ]
-                // ]) ?? [];
-                return view('compensation.insertion_partials.comptes_client');
+                $data['infosGlobales'] = $fetchSoapData('WSINFORMATIONGLOB', [
+                    'enquiryInputCollection' => [
+                        ["columnName" => "CODE.CLIENT", "criteriaValue" => $id_client, "operand" => "EQ"],
+                        ["columnName" => "NUM.COMPTE", "criteriaValue" => $account, "operand" => "EQ"]
+                    ]
+                ]) ?? [];
+                return view('compensation.insertion_partials.comptes_client', $data);
         }
     }
 

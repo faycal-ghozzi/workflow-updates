@@ -59,22 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const initCustomMultiSelect = (containerId, inputName) => {
     const container = document.getElementById(containerId);
+    if (!container) return;
+  
     const available = container.querySelector(".available-items");
     const selected = container.querySelector(".selected-items");
   
-    // Move to selected
     available.addEventListener("click", (e) => {
       const pill = e.target.closest(".custom-pill");
       if (!pill) return;
       const value = pill.dataset.value;
   
-      // Create new selected pill
       const selectedPill = document.createElement("span");
       selectedPill.className = "custom-pill selected";
       selectedPill.dataset.value = value;
       selectedPill.innerHTML = `${pill.textContent} <span class="remove">&times;</span>`;
   
-      // Add hidden input
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = inputName;
@@ -85,14 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
       pill.remove();
     });
   
-    // Remove from selected
     selected.addEventListener("click", (e) => {
       if (!e.target.classList.contains("remove")) return;
   
       const pill = e.target.closest(".custom-pill");
       const value = pill.dataset.value;
   
-      // Recreate pill in available
       const newAvailable = document.createElement("span");
       newAvailable.className = "custom-pill";
       newAvailable.dataset.value = value;

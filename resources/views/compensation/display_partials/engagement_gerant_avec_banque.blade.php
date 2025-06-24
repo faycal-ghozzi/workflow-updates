@@ -22,18 +22,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($engagement_gerant as $imp)
+                            @foreach($engagement_gerant as $item)
                                 <tr>
-                                    <td>{{ $imp->code_gerant ?? '--' }}</td>
-                                    <td>{{ $imp->nom_gerant ?? '--' }}</td>
-                                    <td>{{ $imp->client ?? '--' }}</td>
-                                    <td>{{ $imp->classement ?? '--' }}</td>
-                                    <td>{{ $imp->engagement ?? '--' }}</td>
-                                    <td>{{ $imp->type_eng_gerant ?? '--' }}</td>
-                                    <td>{{ $imp->date_eng_gerant ?? '--' }}</td>
-                                    <td>{{ $imp->montant_eng_gerant ?? '--' }}</td>
-                                    <td>{{ $imp->devise ?? '--' }}</td>
-                                    <td>{{ $imp->encours_tnd ?? '--' }}</td>
+                                    <td>{{ $item->code_gerant ?? '--' }}</td>
+                                    <td>{{ $item->nom_gerant ?? '--' }}</td>
+                                    <td>{{ $item->client ?? '--' }}</td>
+                                    <td>{{ $item->classement ?? '--' }}</td>
+                                    <td>{{ $item->engagement ?? '--' }}</td>
+                                    <td>{{ $item->type_eng_gerant ?? '--' }}</td>
+                                    <td>{{ $item->date_eng_gerant ?? '--' }}</td>
+                                    <td>{{ $item->montant_eng_gerant ?? '--' }}</td>
+                                    <td>{{ $item->devise ?? '--' }}</td>
+                                    <td>{{ $item->encours_tnd ?? '--' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -1,9 +1,12 @@
+{{-- @php
+    dd($placement)
+@endphp --}}
 <div class="card shadow-sm rounded-4 mb-4">
     <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Placement</h5>
     </div>
     <div class="card-body">
-        @if(!empty($placement))
+        @if(!empty($placement[0]->reference))
             <div class="form-group">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-sm">
@@ -21,17 +24,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($placement as $plc)
+                            @foreach($placement as $item)
                                 <tr>
-                                    <td>{{ $plc->reference ?? '--' }}</td>
-                                    <td>{{ $plc->nature ?? '--' }}</td>
-                                    <td>{{ $plc->montant ?? '--' }}</td>
-                                    <td>{{ $plc->devise ?? '--' }}</td>
-                                    <td>{{ $plc->du ?? '--' }}</td>
-                                    <td>{{ $plc->au ?? '--' }}</td>
-                                    <td>{{ $plc->taux ?? '--' }}</td>
-                                    <td>{{ $plc->basetmm ?? '--' }}</td>
-                                    <td>{{ $plc->marge ?? '--' }}</td>
+                                    <td>{{ $item->reference ?? '--' }}</td>
+                                    <td>{{ $item->nature ?? '--' }}</td>
+                                    <td>{{ $item->montant ?? '--' }}</td>
+                                    <td>{{ $item->devise ?? '--' }}</td>
+                                    <td>{{ $item->du ?? '--' }}</td>
+                                    <td>{{ $item->au ?? '--' }}</td>
+                                    <td>{{ $item->taux ?? '--' }}</td>
+                                    <td>{{ $item->basetmm ?? '--' }}</td>
+                                    <td>{{ $item->marge ?? '--' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

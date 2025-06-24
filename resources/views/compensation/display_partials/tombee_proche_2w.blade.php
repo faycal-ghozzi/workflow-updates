@@ -9,26 +9,27 @@
             <div class="row g-4">
                 <div class="col-3"></div>
                 <div class="col-3"><input type="text" class="fw-bold form-control-plaintext" id="totale_escompte" value="{{ $tombe }}" readonly></div>
-                <div class="col-3"><button class="btn btn btn-success" data-toggle="modal" data-target="#modal_escompte_comm_{{$view_comp->id}}">Consulter</button></div>
+                <div class="col-3"><button class="btn btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_escompte_comm_{{$view_comp->id}}">Consulter</button></div>
                 <div class="col-3"></div>
             </div>
         </div>
-
+        <br>
         <div class="row">
             <h5 class="card-description text-secondary">Decouvertes Mobilisées</h5>
             <br>
             <div class="row g-4">
                 <div class="col-3"></div>
                 <div class="col-3"><input class="fw-bold form-control-plaintext" value="{{ $decouvert }}" id="totale_decouvert" readonly></div>
-                <div class="col-3"><button class="btn btn btn-success" data-toggle="modal" data-target="#modal_decouvert_mobilise_{{$view_comp->id}}">Consulter</button></div>
+                <div class="col-3"><button class="btn btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_decouvert_mobilise_{{$view_comp->id}}">Consulter</button></div>
                 <div class="col-3"></div>
             </div>
         </div>
-
+        <br>
         <div class="row">
             <h5 class="card-description text-secondary">Autres</h5>
+            <hr>
             <br>
-            @if(!empty($tombe_compensation))
+            @if(!empty($tombe_compensation[0]->reference))
                 <div class="form-group">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-sm">
@@ -40,16 +41,16 @@
                                 <th>Date Echéance</th>
                                 <th>Date Proche</th>
                             </thead>
-                            @foreach ($tombe_compensation as $tm)
-                                @if (($tm->category != 21050)&&($tm->category != 21059))
+                            @foreach ($tombe_compensation as $item)
+                                @if (($item->category != 21050)&&($item->category != 21059))
                                     <tbody>
                                         <tr>
-                                            <td>{{ $tm->reference ?? '--' }}</td>
-                                            <td>{{ $tm->nature ?? '--' }}</td>
-                                            <td>{{ $tm->montant ?? '--' }}</td>
-                                            <td>{{ $tm->devise ?? '--' }}</td>
-                                            <td>{{ $tm->date_ech ?? '--' }}</td>
-                                            <td>{{ $tm->date_proche ?? '--' }}</td>
+                                            <td>{{ $item->reference ?? '--' }}</td>
+                                            <td>{{ $item->nature ?? '--' }}</td>
+                                            <td>{{ $item->montant ?? '--' }}</td>
+                                            <td>{{ $item->devise ?? '--' }}</td>
+                                            <td>{{ $item->date_ech ?? '--' }}</td>
+                                            <td>{{ $item->date_proche ?? '--' }}</td>
                                         </tr>
                                     </tbody>
                                 @endif

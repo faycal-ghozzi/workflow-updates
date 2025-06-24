@@ -3,33 +3,46 @@
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Encours impayé client</h5>
     </div>
     <div class="card-body">
-        @if(!empty($engagement_gerant))
-            <div class="form-group">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-sm">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Référence</th>
-                                <th>Type d'impayé</th>
-                                <th>Montant</th>
-                                <th>Devise</th>
-                                <th>Montant en TND</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($impaye_besoin as $imp)
-                                <tr>
-                                    <td>{{ $imp->ref ?? '--' }}</td>
-                                    <td>{{ $imp->nature_besoin ?? '--' }}</td>
-                                    <td>{{ $imp->valeur_besoin ?? '--' }}</td>
-                                    <td>{{ $imp->devise ?? '--' }}</td>
-                                    <td>{{ $imp->mantant_tnd ?? '--' }}</td>
-                                    <td>{{ $imp->echeance_besoin ?? '--' }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+        @if(!empty($impaye_besoin[0]->ref))
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Type d'impayé</th>
+                                        <th>Montant</th>
+                                        <th>Devise</th>
+                                        <th>Montant en TND</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($impaye_besoin as $item)
+                                        <tr>
+                                            <td>{{ $item->ref ?? '--' }}</td>
+                                            <td>{{ $item->nature_besoin ?? '--' }}</td>
+                                            <td>{{ $item->valeur_besoin ?? '--' }}</td>
+                                            <td>{{ $item->devise ?? '--' }}</td>
+                                            <td>{{ $item->mantant_tnd ?? '--' }}</td>
+                                            <td>{{ $item->echeance_besoin ?? '--' }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="text-danger">{{ __('Total en TND') }}</label>
+                        <input type="text" class="form-control" id="impaye_besoin_tnd" value="{{ $impaye_client_besoin }}" readonly/>
+                    </div>
                 </div>
             </div>
         @else

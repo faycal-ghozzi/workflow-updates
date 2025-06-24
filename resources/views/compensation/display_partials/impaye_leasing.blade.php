@@ -16,12 +16,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($impaye_leasing as $imp)
+                            @foreach($impaye_leasing as $item)
                                 <tr>
-                                    <td>{{ $imp->num_compte ?? '--' }}</td>
-                                    <td>{{ $imp->solde ?? '--' }}</td>
-                                    <td>{{ $imp->currency ?? '--' }}</td>
-                                    <td>{{ $imp->opening_date ?? '--' }}</td>
+                                    <td>{{ $item->num_compte ?? '--' }}</td>
+                                    <td>{{ $item->solde ?? '--' }}</td>
+                                    <td>{{ $item->currency ?? '--' }}</td>
+                                    <td>{{ $item->opening_date ?? '--' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

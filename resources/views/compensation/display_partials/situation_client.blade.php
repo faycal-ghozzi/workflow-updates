@@ -133,7 +133,7 @@
                                     <label class="form-check-label">Oui</label>
                                 </div>
                                 <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="liste_finance_rapport_reserve" id="liste_finance_rapport_reserve_oui" value="oui"  @if($view_comp->liste_finance_rapport_reserve =='oui') checked @endif disabled>
+                                    <input class="form-check-input" type="radio" name="liste_finance_rapport_reserve" id="liste_finance_rapport_reserve_non" value="non"  @if($view_comp->liste_finance_rapport_reserve =='oui') checked @endif disabled>
                                     <label class="form-check-label">Non</label>
                                 </div>
                             </div>

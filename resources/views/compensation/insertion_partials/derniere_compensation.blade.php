@@ -80,8 +80,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
+                                <table class="table table-bordered table-striped table-sm">
+                                    <thead class="table-dark">
                                         <th>Promesse</th>
                                         <th>Values</th>
                                     </thead>

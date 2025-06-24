@@ -71,8 +71,8 @@
         </div>
 
         <div class="table-responsive d-none" id="impaye_table_container">
-            <table class="table align-middle" id="tab_impaye">
-                <thead>
+            <table class="table table-bordered table-striped table-sm" id="tab_impaye">
+                <thead class="table-dark">
                     <tr>
                         <th>Nature</th>
                         <th>Montant</th>
@@ -100,8 +100,8 @@
                 <div class="col-12">
                     <div class="form-group">
                         <div class="table-responsive">
-                            <table class="table">
-                                <thead>
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead class="table-dark">
                                     <tr>
                                         <th>Référence</th>
                                         <th>Montant</th>
@@ -410,8 +410,8 @@
                     <div class="col-12">
                         <div class="form-group">
                             <div class="table-responsive">
-                                <table class="table_tombee">
-                                    <thead>
+                                <table class="table table-bordered table-striped table-sm table_tombee">
+                                    <thead class="table-dark">
                                         <th>Référence</th>
                                         <th>Nature</th>
                                         <th>Montant</th>

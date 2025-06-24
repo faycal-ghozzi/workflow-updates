@@ -15,8 +15,8 @@
         </div>
 
         <div class="table-responsive d-none" id="justif_table_container">
-            <table class="table align-middle" id="tab_justif">
-                <thead>
+            <table class="table table-bordered table-striped table-sm align-middle" id="tab_justif">
+                <thead class="table-dark">
                     <tr>
                         <th>Promesses</th>
                         <th>Montant</th>

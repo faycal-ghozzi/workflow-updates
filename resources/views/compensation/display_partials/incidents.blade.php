@@ -3,7 +3,7 @@
         <h5 class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Incidents de paiment (non régularisé)</h5>
     </div>
     <div class="card-body">
-        @if(!empty($incidents))
+        @if(!empty($incidents[0]->ref))
             <div class="form-group">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-sm">
@@ -21,17 +21,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($incidents as $incident)
+                            @foreach($incidents as $item)
                                 <tr>
-                                    <td>{{ $incident->ref ?? '--' }}</td>
-                                    <td>{{ $incident->num_chq ?? '--' }}</td>
-                                    <td>{{ $incident->code_presentation ?? '--' }}</td>
-                                    <td>{{ $incident->montant ?? '--' }}</td>
-                                    <td>{{ $incident->currency ?? '--' }}</td>
-                                    <td>{{ $incident->date_emission ?? '--' }}</td>
-                                    <td>{{ $incident->rib_benef ?? '--' }}</td>
-                                    <td>{{ $incident->nom_benef ?? '--' }}</td>
-                                    <td>{{ $incident->motif_rejet ?? '--' }}</td>
+                                    <td>{{ $item->ref ?? '--' }}</td>
+                                    <td>{{ $item->num_chq ?? '--' }}</td>
+                                    <td>{{ $item->code_presentation ?? '--' }}</td>
+                                    <td>{{ $item->montant ?? '--' }}</td>
+                                    <td>{{ $item->currency ?? '--' }}</td>
+                                    <td>{{ $item->date_emission ?? '--' }}</td>
+                                    <td>{{ $item->rib_benef ?? '--' }}</td>
+                                    <td>{{ $item->nom_benef ?? '--' }}</td>
+                                    <td>{{ $item->motif_rejet ?? '--' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
